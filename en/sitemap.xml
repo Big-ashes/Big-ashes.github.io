@@ -2,91 +2,91 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://github.com/Big-ashes/Big-ashes.github.io/</loc>
+    <loc>https://www.bigashes.com/</loc>
     <lastmod>2020-01-01T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fa"
-                href="https://github.com/Big-ashes/Big-ashes.github.io/fa/"
+                href="https://www.bigashes.com/fa/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="https://github.com/Big-ashes/Big-ashes.github.io/ja/"
+                href="https://www.bigashes.com/ja/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="https://github.com/Big-ashes/Big-ashes.github.io/zh-cn/"
+                href="https://www.bigashes.com/zh-cn/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://github.com/Big-ashes/Big-ashes.github.io/"
+                href="https://www.bigashes.com/"
                 />
   </url><url>
-    <loc>https://github.com/Big-ashes/Big-ashes.github.io/blog/</loc>
+    <loc>https://www.bigashes.com/blog/</loc>
     <lastmod>2020-01-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/Big-ashes/Big-ashes.github.io/tags/example/</loc>
+    <loc>https://www.bigashes.com/tags/example/</loc>
     <lastmod>2020-01-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/Big-ashes/Big-ashes.github.io/tags/guide/</loc>
+    <loc>https://www.bigashes.com/tags/guide/</loc>
     <lastmod>2020-01-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/Big-ashes/Big-ashes.github.io/tags/markdown/</loc>
+    <loc>https://www.bigashes.com/tags/markdown/</loc>
     <lastmod>2020-01-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/Big-ashes/Big-ashes.github.io/blog/test/</loc>
+    <loc>https://www.bigashes.com/blog/test/</loc>
     <lastmod>2020-01-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/Big-ashes/Big-ashes.github.io/tags/</loc>
+    <loc>https://www.bigashes.com/tags/</loc>
     <lastmod>2020-01-01T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fa"
-                href="https://github.com/Big-ashes/Big-ashes.github.io/fa/tags/"
+                href="https://www.bigashes.com/fa/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="https://github.com/Big-ashes/Big-ashes.github.io/ja/tags/"
+                href="https://www.bigashes.com/ja/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="https://github.com/Big-ashes/Big-ashes.github.io/zh-cn/tags/"
+                href="https://www.bigashes.com/zh-cn/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://github.com/Big-ashes/Big-ashes.github.io/tags/"
+                href="https://www.bigashes.com/tags/"
                 />
   </url><url>
-    <loc>https://github.com/Big-ashes/Big-ashes.github.io/blog/tst/</loc>
+    <loc>https://www.bigashes.com/blog/tst/</loc>
   </url><url>
-    <loc>https://github.com/Big-ashes/Big-ashes.github.io/docs/</loc>
+    <loc>https://www.bigashes.com/docs/</loc>
   </url><url>
-    <loc>https://github.com/Big-ashes/Big-ashes.github.io/categories/</loc>
+    <loc>https://www.bigashes.com/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="fa"
-                href="https://github.com/Big-ashes/Big-ashes.github.io/fa/categories/"
+                href="https://www.bigashes.com/fa/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="https://github.com/Big-ashes/Big-ashes.github.io/ja/categories/"
+                href="https://www.bigashes.com/ja/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="https://github.com/Big-ashes/Big-ashes.github.io/zh-cn/categories/"
+                href="https://www.bigashes.com/zh-cn/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://github.com/Big-ashes/Big-ashes.github.io/categories/"
+                href="https://www.bigashes.com/categories/"
                 />
   </url>
 </urlset>

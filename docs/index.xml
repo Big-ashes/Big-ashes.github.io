@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Bigash – </title>
-    <link>https://github.com/Big-ashes/Big-ashes.github.io/docs/</link>
+    <link>https://www.bigashes.com/docs/</link>
     <description>Recent content on Bigash</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     
-	  <atom:link href="https://github.com/Big-ashes/Big-ashes.github.io/docs/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="https://www.bigashes.com/docs/index.xml" rel="self" type="application/rss+xml" />
     
     
       

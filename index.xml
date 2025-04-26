@@ -211,7 +211,688 @@ $$&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>$$
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f(x) = \int_{-\infty}^\infty\hat f(\xi)\,e^{2 \pi i \xi x}\,d\xi
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$$
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>归档</title><link>https://bigashes.com/page/archives/</link><pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate><guid>https://bigashes.com/page/archives/</guid><description/></item><item><title>搭建个人小站准备工作</title><link>https://bigashes.com/post/website/</link><pubDate>Wed, 06 Mar 2019 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/website/</guid><description>&lt;h1 id="搭建个人小站准备工作">搭建个人小站准备工作
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>归档</title><link>https://bigashes.com/page/archives/</link><pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate><guid>https://bigashes.com/page/archives/</guid><description/></item><item><title>FRP 的配置和使用</title><link>https://bigashes.com/post/protocol/frp/</link><pubDate>Wed, 29 Apr 2020 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/protocol/frp/</guid><description>&lt;h1 id="frp-的配置和使用">FRP 的配置和使用
+&lt;/h1>&lt;p>FRP（fast reverse proxy）可以用于反向代理和内网穿透，支持TCP，UDP，HTTP，HTTPS，这样就可以将内网的服务非常便携的通过具有公网IP节点的形式暴露到公网，作者是一个中国人，并且在&lt;a class="link" href="https://github.com/fatedier/frp" target="_blank" rel="noopener"
+>GitHub上可以找到对应的项目&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>这里指明&lt;a class="link" href="https://gofrp.org" target="_blank" rel="noopener"
+>frp的官方文档&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;h2 id="远程桌面">远程桌面
+&lt;/h2>&lt;p>首先想到的就是远程桌面，配置frp，电脑作为客户端，公网服务器作为服务器端，电脑暴露共享桌面端口，可以自行设置，一般都是3389
+&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202201192109577.png"
+loading="lazy"
+alt="image-20220119210907525"
+>
+然后分别设置客户端的frpc.ini 和服务器端的frps.ini，将相应的端口开放通行
+通过RDclient就可以直接远程访问电脑，直接操作电脑，之前是在局域网内，非常不方便，换网就连不上了，但是拥有服务器之后，就可以把服务映射部署在公网上，任何时候都可以达到远程访问的目的，当然前提是你的客户端得开机。&lt;/p>
+&lt;h3 id="客户端配置">客户端配置
+&lt;/h3>&lt;p>需要在Windows端配置frp服务器端，还需要在任务计划程序中设置相对应的脚本开机启动&lt;/p>
+&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202201192025470.png"
+loading="lazy"
+alt="image-20220119202520707"
+>
+配置相应的端口映射端口服务，如smb服务和tcp服务的远程桌面&lt;/p>
+&lt;h4 id="rdp的远程桌面">rdp的远程桌面
+&lt;/h4>&lt;pre tabindex="0">&lt;code>[common]
+server_addr = XX.XX.XX.XX
+server_port = XXXX
+token = XXXXXXXXXXXX
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>[rdp]
+type = tcp
+local_ip = 127.0.0.1
+local_port = 3389
+remote_port = 3389
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>[smb]
+type = tcp
+local_ip = 127.0.0.1
+local_port = 445
+remote_port = 7002
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>[ssh]
+type = tcp
+local_ip = 127.0.0.1
+local_port = 22
+remote_port = 6000
+&lt;/code>&lt;/pre>&lt;h3 id="服务器端配置">服务器端配置
+&lt;/h3>&lt;p>需要在公网服务器上配置
+下载解压安装frp
+随后修改frps.ini，还可以配置一个端口作为管理页面，如下&lt;/p>
+&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202201192114938.png"
+loading="lazy"
+alt="image-20220119211416902"
+>&lt;/p>
+&lt;p>两者都配置完成后，都启用，即可在RD client中直接通过访问ip：端口的形式访问电脑&lt;/p>
+&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202201192103378.jpg"
+loading="lazy"
+alt="RD client"
+>&lt;/p>
+&lt;h3 id="可能出现的错误">可能出现的错误
+&lt;/h3>&lt;p>Your session has ended because of an error – Error Code 0x4
+1.可能是网站域名没有备案的缘故，换成公网ip
+2.远程设置里勾上仅允许运行使用网络级别身份验证
+3.防火墙设置里允许程序或功能通过防火墙里找到远程连接remote desktop 后面两勾要勾上。防火墙新增出站入站规则。准许对应端口号通过。安全性不高可以设置all
+4.win+R键，输入services.msc 打开，找到三项：(remote desktop services)
+(remote desktop services usermod portredirector)
+(remote desktop configuration)，右键属性中启动类型设置为自动，然后手动启动服务。&lt;/p>
+&lt;h2 id="smb服务">SMB服务
+&lt;/h2>&lt;p>2019年苹果在WWDC宣布增加了对APFS格式硬盘和SMB文件共享的支持，SMB的服务支持，可以很好的打破苹果和windows系统之间的隔阂，完成一种曲线救国的方案，完成之后就可以在ipad上直接操作win上暴露给ipad的文件夹，保存编辑等一应俱全&lt;/p>
+&lt;h3 id="smb的ipad文件服务">smb的ipad文件服务
+&lt;/h3>&lt;p>需要在客户端也就是电脑开放相应的本地端口&lt;/p>
+&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202201192120684.png"
+loading="lazy"
+alt="image-20220119212002635"
+>
+开通成功后，即可在ipad文件服务器连接这个smb服务&lt;/p>
+&lt;blockquote>
+&lt;p>SMB(Server Message Block)是一个协议，用于web连接与服务端之间的信息沟通&lt;/p>&lt;/blockquote></description></item><item><title>POSIX可移植操作系统接口</title><link>https://bigashes.com/post/linux/posix/</link><pubDate>Wed, 29 Apr 2020 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/linux/posix/</guid><description>&lt;h1 id="posix可移植操作系统接口">POSIX可移植操作系统接口
+&lt;/h1>&lt;p>POISX 可移植操作系统接口，（Portable Operating System Interface of UNIX）&lt;/p>
+&lt;p>POSIX是各种UNIX操作系统中运行的软件定义的一系列API标准的总称，也就是说，POISX是UNIX的标准，经由IEEE或者The Open Group认证后，符合标准的，就可以采用POSIX®&lt;/p>
+&lt;p>&lt;a class="link" href="www.opengroup.org/certification/idx/posix.html" >点击进入opengroup可以查看IEEE和POISX认证&lt;/a>&lt;/p>
+&lt;h2 id="发展历史">发展历史
+&lt;/h2>&lt;h3 id="来由">来由
+&lt;/h3>&lt;p>1974年贝尔实验室发布了Unix后，就提供了源代码，在获得大量支持后得以继续发展，同时也出现了一批独立开发，但是与Unix基本兼容但又不完全兼容的系统，也叫Unix-like OS ，类Unix操作系统，UNix的发展历史在之前一篇介绍Linux的文章中有提到过
+&lt;a class="link" href="https://www.levenez.com/unix/" target="_blank" rel="noopener"
+>点击跳转unix历史，可以查看pdf中的记录的各个分支系统&lt;/a>&lt;/p>
+&lt;p>非常混乱的背景下，兼容性就大相径庭，这时候就需要一个标准，来制约Unix的开发，后来也就叫做Posix
+这一套标准定义了很多：如C语言接口，shell程序，网络编程，线程，等等。&lt;/p>
+&lt;h2 id="逐渐普及">逐渐普及
+&lt;/h2>&lt;p>我们现在熟悉的Unix，Linux，安卓，苹果，这些都是基于Unix-based的，在这个规范的定义之下，就可以调用通用的API了，WIndows也是在市场的逼迫之下，支持了POSIX&lt;/p>
+&lt;h2 id="部分功能">部分功能
+&lt;/h2>&lt;h3 id="系统调用和库函数调用">系统调用和库函数调用
+&lt;/h3>&lt;p>Linux下的很多操作可以看成对文件的操作，文件操作就有两种；&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>系统调用（system call）
+系统调用本来就是操作系统留给应用程序的接口，是直接面向底层硬件的，可以让用户态运行的资源与硬件交互，其执行的位置在内核地址空间&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>库函数调用（Library functions）
+库函数是把定义好的函数放到库里，供人使用的一种方式，也就是传说中的头文件，当然这只是其中一类还有一类就是编译器特定的库函数，其执行的位置在用户地址空间&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>POISX的兼容就是指定这些接口函数兼容&lt;/p>
+&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202205281840293.png"
+loading="lazy"
+alt="image-20220528184018629"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>一般库函数的源代码是不可见的，但在头文件中可以看到他对外的接口&lt;/p>&lt;/blockquote>
+&lt;h3 id="可移植性">可移植性
+&lt;/h3>&lt;p>我们实际使用的程序，都是经过编译器的编译来变成最终的程序，从而顺利执行的，分为两块后，就是启动代码+目标代码&lt;/p>
+&lt;p>目标代码就是由编译器编译而来的，而启动代码，也即是在不同的平台，就是不同的运行结果了，为了其相互兼容，POSIX也对此做了不同的目标代码函数，这样一来，不同的平台，由不相同的启动代码+不相同的目标代码完成了应有的功能。&lt;/p>
+&lt;p>这个过程很像网络五层协议之间的加减请求头的操作。（其实这个就涉及到对一个一般很难的问题的拆分和解构，也就是传说中的解耦）&lt;/p>
+&lt;h3 id="系统开销">系统开销
+&lt;/h3>&lt;p>系统调用的使用往往伴随着程序的中断，执行调用是用户态和内核态的切换，为了减少系统调用带来的开销，久需要尽可能的减少系统调用的次数，每次让系统调用尽可能的完成多的任务，&lt;/p>
+&lt;p>这个过程其实就是先提供一些标准的函数库，然后综合，尽量向设备和文件提供更高层的接口，&lt;/p>
+&lt;blockquote>
+&lt;p>系统调用和API（Application Programming Interface）不同，系统调用涉及到操作系统状态的转换，而API始终是开放的&lt;/p>&lt;/blockquote>
+&lt;p>其实写这一篇的目的就是引出接下来的WSL（windoes subsystem for Linux）用来学习操作系统和LInux，而WSL就是POISX subsystem&lt;/p></description></item><item><title>了解 GNU/Linux 操作系统</title><link>https://bigashes.com/post/linux/nginx/</link><pubDate>Wed, 29 Apr 2020 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/linux/nginx/</guid><description>&lt;h1 id="了解-gnulinux-操作系统">了解 GNU/Linux 操作系统
+&lt;/h1>&lt;p>Linux是服务器的（kernel）内核&lt;/p>
+&lt;h2 id="gnu">GNU
+&lt;/h2>&lt;p>平常说的linux操作系统全程是GNU/linux，单独的linux一般指的并不是操作系统，而是操作系统的内核，linux内核和GNU的组件组合在一起才是操作系统&lt;/p>
+&lt;blockquote>
+&lt;p>GNU 是“GNU&amp;rsquo;s Not Unix” （GNU并非Unix） 的递归首字母缩写词，发音为g’noo（哥no ⇣）
+GNU 是一个自由软件集体协作计划。它的目标是创建一套完全自由的操作系统GNU。由&lt;a class="link" href="https://www.fsf.org/" target="_blank" rel="noopener"
+>自由软件基金会（FSF）&lt;/a>以等多种方式支持，详细了解看看&lt;a class="link" href="https://www.gnu.org/gnu/gnu.html" target="_blank" rel="noopener"
+>关于GUN&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;h2 id="unix">Unix
+&lt;/h2>&lt;p>这里是为了区分一下GNU和Unix
+Linux，还有ios，Android，鸿蒙等都属于类Unix操作系统，Unix指的是操作系统，GNU的设计类似Unix，但是不包含具著作权的Unix代码，在上面的GNU&amp;rsquo;s Not Unix也能看出端倪&lt;/p>
+&lt;blockquote>
+&lt;p>查看&lt;a class="link" href="https://www.levenez.com/unix/" target="_blank" rel="noopener"
+>unix历史&lt;/a>,这里有个pdf文档，可以在里面看到UNIX的发展史，从一开始的UNICS衍生出各种系统，UNIX，Linux，IOS，Android&amp;hellip;..写这篇文档时，最新页面更新到了2021，这张历史图只是冰山一角，很多公司都有自己的unix版本&lt;/p>&lt;/blockquote>
+&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202201181043460.png"
+loading="lazy"
+alt="image-20220118104257314"
+>&lt;/p>
+&lt;h2 id="其他内核">其他内核
+&lt;/h2>&lt;p>linux的内核其实很常见&lt;/p>
+&lt;ul>
+&lt;li>安卓手机内核是linux&lt;/li>
+&lt;li>Openwrt内核也是linux&lt;/li>
+&lt;li>物理网中的嵌入式设备&lt;/li>
+&lt;/ul>
+&lt;p>不仅仅只有linux内核，还有很多其他的&lt;/p>
+&lt;ul>
+&lt;li>苹果的ios和mac操作系统首先是基于苹果自己开发的Darwin，类Unix系统，其内核是基于xnu（XUN&amp;rsquo;s Not UNIX）的一个混合内核,在gitee，github上可以找到&lt;a class="link" href="https://gitee.com/mirrors/darwin-xnu/" target="_blank" rel="noopener"
+>苹果开放的源码&lt;/a>&lt;/li>
+&lt;li>微软的Windows内核不公开&lt;/li>
+&lt;li>bsd 内核，索尼，任天堂都是用 bsd 而非 linux&lt;/li>
+&lt;li>GNU的hurd内核&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>一般拿到服务器的时候，可以用uname查看本机的内核，详细内容看linux系列的常用操作&lt;/p>&lt;/blockquote>
+&lt;h2 id="tuxedo">tuxedo
+&lt;/h2>&lt;p>一般看到的Linux系统图片都有一个小企鹅，它叫tux，全称是tuxdeo，是linux的吉祥物&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202201181116928.png"
+loading="lazy"
+alt="image-20220118111659870"
+>&lt;/p></description></item><item><title>配置图床</title><link>https://bigashes.com/post/vps/nginx/</link><pubDate>Wed, 29 Apr 2020 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/vps/nginx/</guid><description>&lt;h1 id="配置图床">配置图床
+&lt;/h1>&lt;p>由于网站的文章全是由自己一个人编写，之前采用的方式是用word将文章的脚本全部存下，还有一些截图，但是每次服务器到期后更换服务器，整站迁移的时候，图片和文章格式总是有很大问题，故准备改成图床的方案&lt;/p>
+&lt;blockquote>
+&lt;p>bigash采用的图床方案是Github+PicGo,此篇也是记录这个方式&lt;/p>&lt;/blockquote>
+&lt;h2 id="picgo">PicGo
+&lt;/h2>&lt;p>首先拥有一款软件，picgo，这个软件支持很多种图床，如七牛云，阿里云，Gitee&amp;hellip;&amp;hellip;采用其他的方案都是一个道理，配置相应图床的配置，自动上传图片&lt;/p>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/Big-ashes/mypic@master/img/202201182051401.png"
+loading="lazy"
+alt="image-20220118205134348"
+>&lt;/p>
+&lt;h2 id="github">Github
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>建库
+在Github建立一个共有仓库，此仓库用来当图床，也就是说图片全部上传到这里，注意容量，超过1G需要审核，不要传特别大的就好&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>建token
+建立好token之后，复制token到PicGo，并配置url链接，由于Github是国外网站，在链接中，可以采用CDN加速的方式，使得图片加载迅速&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202201182053674.png"
+loading="lazy"
+alt="image-20220118205327627"
+>&lt;/p>
+&lt;p>图片的链接如下&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>https://cdn.jsdelivr.net/gh/GitHub-ID/仓库名@master/分支存储路径
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 备用地址&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>https://fastly.jsdelivr.net/gh/用户名/仓库名/文件路径
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>配置完成之后就可以在相册中复制图片链接，非常方便。&lt;/p>
+&lt;blockquote>
+&lt;p>CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN的关键技术主要有内容存储和分发技术。
+除了图床，网站的访问也可以配置CDN加速，用七牛云等服务&lt;/p>&lt;/blockquote>
+&lt;h2 id="typora">Typora
+&lt;/h2>&lt;p>自从用了markdown写文章，轻松了很多，没有格式的烦恼，其实有了图床方案，可以直接在Typora上整一个自动上传，贴图上去之后自动上传并转换url，复制一份代码即可全网粘贴，格式纹丝不动，十分 amazing 啊&lt;/p>
+&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202201182100976.png"
+loading="lazy"
+alt="image-20220118210006930"
+>&lt;/p>
+&lt;p>除此之外呢，还可以设定脚本，用Git直接push，并且自动获取链接&lt;/p></description></item><item><title>线性结构的应用</title><link>https://bigashes.com/post/datastructures/nginx/</link><pubDate>Wed, 29 Apr 2020 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/datastructures/nginx/</guid><description>&lt;h1 id="线性结构的应用">线性结构的应用
+&lt;/h1>&lt;p>具体的线性结构应用分为下面两种：&lt;/p>
+&lt;h2 id="栈">栈
+&lt;/h2>&lt;p>一种可以实现&lt;strong>先进后出&lt;/strong>的存储结构，类似弹夹&lt;/p>
+&lt;h3 id="栈的分类">栈的分类：
+&lt;/h3>&lt;ul>
+&lt;li>静态栈（也就是顺序栈）&lt;/li>
+&lt;li>动态栈（也就是链栈）&lt;/li>
+&lt;/ul>
+&lt;h3 id="栈的定义">栈的定义
+&lt;/h3>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-C" data-lang="C">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> Node
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> data;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> Node &lt;span style="color:#f92672">*&lt;/span>pNext;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}NODE,&lt;span style="color:#f92672">*&lt;/span>PNODE;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> Stack
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> PNODE pTop; &lt;span style="color:#75715e">//弹夹顶部
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> PNODE pBottom; &lt;span style="color:#75715e">//弹夹底部的一个元素(头节点)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}STACK,&lt;span style="color:#f92672">*&lt;/span>PSTACK; &lt;span style="color:#75715e">//PSTACK 等价于 struct STACK *
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="栈的应用">栈的应用
+&lt;/h3>&lt;ul>
+&lt;li>函数调用（复合函数？递归）&lt;/li>
+&lt;li>中断&lt;/li>
+&lt;li>表达式求值&lt;/li>
+&lt;li>内存分配&lt;/li>
+&lt;li>缓冲处理&lt;/li>
+&lt;li>迷宫&amp;hellip;&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;h2 id="队列">队列
+&lt;/h2>&lt;p>是一种可以实现&lt;strong>先进先出&lt;/strong>的存储结构&lt;/p>
+&lt;h3 id="队列分类">队列分类
+&lt;/h3>&lt;ul>
+&lt;li>静态队列（顺序队）&amp;ndash;数组实现
+通常都是&lt;strong>循环队列&lt;/strong>&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>用一般的数组实现队列会浪费空间，但是如果思想不变，变个形式，变成一个圈，也就是循环队列，就可以解决这个问题
+头部frout 和尾部rear在不同场合有不同的含义
+frout=rear 空
+多增加一个元素标识参数或者少用一个元素来判断满与不满，若frout与rear相邻，则满&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>链式队列（链队）&amp;ndash;链表实现&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-C" data-lang="C">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//循环队列的结构体
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//头部frout 和尾部rear在不同场合有不同的含义
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> Queue{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> &lt;span style="color:#f92672">*&lt;/span>pBase; &lt;span style="color:#75715e">//指向头的指针
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> frout; &lt;span style="color:#75715e">//头
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> rear &lt;span style="color:#75715e">//尾部后一个元素
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}QUEUE,&lt;span style="color:#f92672">*&lt;/span>PQUEUE;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="队列的应用">队列的应用
+&lt;/h3>&lt;ul>
+&lt;li>所有和时间有关的操作都与队列有关（操作系统？线程，阻塞&amp;hellip;队列）&lt;/li>
+&lt;/ul>
+&lt;p>最终的代码存放在&lt;a class="link" href="https://github.com/Big-ashes/Data-Structures" target="_blank" rel="noopener"
+>Github仓库&lt;/a> Stack和Queue部分&lt;/p></description></item><item><title>NeoVim配置和使用</title><link>https://bigashes.com/post/vim/nginx/</link><pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/vim/nginx/</guid><description>&lt;h1 id="neovim配置和使用">NeoVim配置和使用
+&lt;/h1>&lt;p>Vim可太好用了，又自然而然找到了NeoVim，用vim的习惯也被带到了Windows下，故记录之
+Vim非常强大，但是是需要很大的学习成本的，多多探索！&lt;/p>
+&lt;blockquote>
+&lt;p>区别：&lt;/p>
+&lt;p>Neovim 专注于后端和控制台，而 Vim 是一个TUI 和 GUI 兼顾的编辑器。
+Neovim 不考虑 Vi 兼容的问题，所以有一个比较好的默认配置， 在全新安装的情况下也可以很好地工作
+Neovim 遵守 XDG Base Directory 规范，生成的文件不会污染 home 目录
+Neovim 支持一些现代终端模拟器的功能，例如它可以在插入模式和普通模式下使用不同形状的光标，可以识别粘贴行为并自动进入 paste 模式等&lt;/p>&lt;/blockquote>
+&lt;h2 id="下载">下载
+&lt;/h2>&lt;ul>
+&lt;li>Windows
+方案很多，可以直接在github上下载，在这里给出地址&lt;a class="link" href="https://github.com/neovim/neovim" target="_blank" rel="noopener"
+>https://github.com/neovim/neovim&lt;/a> 在release即可找到需要的安装包，&lt;/li>
+&lt;li>Linux
+直接用下载工具下载neovim&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>sudo yum install neovim
+sudo apt-get install neovim
+sudo pacman -S neovim
+&lt;/code>&lt;/pre>&lt;h2 id="安装">安装
+&lt;/h2>&lt;ul>
+&lt;li>Windows
+安装之后，需要配置系统环境变量，直接在path中添加&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>D:\XXX\NeoVim\Neovim\bin #这个目录是自己安装时所选择的目录
+&lt;/code>&lt;/pre>&lt;p>Linux就不需要了&lt;/p>
+&lt;h2 id="配置">配置
+&lt;/h2>&lt;ul>
+&lt;li>Windows
+Windows的配置在 ~/AppData/Local/nvim/init.vim,如果没有自己新建即可
+&lt;ul>
+&lt;li>插件安装&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>## vim-plug的文件在win中放在了AppData/Local/nvim/autoload/plug.vim下
+iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |`
+ni $HOME/AppData/Local/nvim/autoload/plug.vim -Forc
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>
+&lt;p>Linux
+neovim的文件配置和vim的类似，linux文件的路径在~/.cinfig/nvim/init.vim,如果没有该文件自己新建即可,用nvim打开后即可添加相关配置&lt;/p>
+&lt;ul>
+&lt;li>插件安装&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>## vim-plug的配置文件我放在了/.config/nvim/autoload/plug.vim
+curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
+https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+&lt;/code>&lt;/pre>&lt;p>最终配置的情况如下：&lt;/p>
+&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202202141103456.png"
+loading="lazy"
+alt="image"
+>&lt;/p>
+&lt;h2 id="上传配置">上传配置
+&lt;/h2>&lt;p>vim和neovim的配置完成后，为了在其他机器上也可以用，所以我们需要将配置文件上传到我们的github仓库
+配置好ssh连接也就是SSH key后&lt;/p>
+&lt;pre tabindex="0">&lt;code>git init #新建库
+git add . #添加
+git commit -m &amp;#34;XXX&amp;#34; #提交XXX说明
+ssh -T git@github.com #测试ssh连接
+git reomte add origin git@github.com:XXXX/XXXX.git
+# XXX为用户名 XXXX为仓库名 这一步添加远程仓库
+git remote -v #查看远程仓库
+git pull origin main #拉取origin的分支main
+#第8行这一步可能会报错，是因为历史版本的不同，我们加上一句参数即可
+git pull origin main --allow-unrelated-histories
+git push -u origin main #上传当前分支到origin的main
+&lt;/code>&lt;/pre>&lt;h2 id="加载配置">加载配置
+&lt;/h2>&lt;p>配置完成之后我们需要一劳永逸的使用我们的配置文件，既然已经上传到git了，在安装好对应的环境后，就可以直接装git然后把整个仓库克隆下来&lt;/p>
+&lt;pre tabindex="0">&lt;code>#cd到.config文件下
+git clone https://github.com/Big-ashes/nvim.git
+# 可能会有连接问题，用http头尝试，不行就是系统有代理，取消一下
+vim ~/.gitconfig
+#直接删除掉http和https的代理
+&lt;/code>&lt;/pre>&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202202141108563.png"
+loading="lazy"
+alt="image-20220214110829523"
+>&lt;/p>
+&lt;h2 id="可能遇到的问题">可能遇到的问题
+&lt;/h2>&lt;pre tabindex="0">&lt;code>#共同修改了某个文件，别人比你先提交，远程仓库和这个仓库有冲突，需要重新校准基础版本
+git pull origin main --rebase
+git rebase --continue
+&lt;/code>&lt;/pre></description></item><item><title>Nginx踩坑之路</title><link>https://bigashes.com/post/website/nginx/</link><pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/website/nginx/</guid><description>&lt;h1 id="nginx踩坑之路">Nginx踩坑之路
+&lt;/h1>&lt;p>这里稍微详细叙述下Nginx的原理和一些可能遇到的问题，都是bigash本人摸索出来的，如有错误，欢迎指正&lt;/p>
+&lt;h2 id="nginx-原理">Nginx 原理
+&lt;/h2>&lt;p>查阅资料后bigash自己得到的理解，大部分都是和搭建个人网站时遇到的问题挂钩&lt;/p>
+&lt;h3 id="nginx">Nginx
+&lt;/h3>&lt;blockquote>
+&lt;p>nginx常用命令
+ps -ef | grep nginx #检查nginx进程
+一般来讲有两个进程 worker和master
+master 主进程 通过接受信号发给worker
+worker 工作进程 更改在nginx.conf&lt;/p>&lt;/blockquote>
+&lt;p>更改事件在event下增加，默认使用的是epoll worker_connections 每个worker默认连接的最大连接数&lt;/p>
+&lt;h2 id="nginxconf配置">Nginx.conf配置
+&lt;/h2>&lt;blockquote>
+&lt;p>main 全局配置&lt;/p>
+&lt;blockquote>
+&lt;p>event 配置工作模式以及连接数&lt;/p>
+&lt;blockquote>
+&lt;p>http http模块相关配置&lt;/p>
+&lt;blockquote>
+&lt;p>server 虚拟主机配置 可多个&lt;/p>
+&lt;blockquote>
+&lt;p>location 路由测试 表达式 匹配规则 正则表达式
+upsteam 集群 内网服务器&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;hr>
+&lt;h3 id="nginx和php">Nginx和php
+&lt;/h3>&lt;h4 id="nginx和php的连接问题">Nginx和php的连接问题
+&lt;/h4>&lt;blockquote>
+&lt;p>nginx和php不能通信
+文件不存在
+php-fpm和nginx不能通信
+root位置错误&lt;/p>&lt;/blockquote>
+&lt;h2 id="nginx日常使用记录">Nginx日常使用记录
+&lt;/h2>&lt;h3 id="查看进程">查看进程
+&lt;/h3>&lt;pre tabindex="0">&lt;code>ps -ef | grep nginx #检查nginx进程
+&lt;/code>&lt;/pre>&lt;blockquote>
+&lt;p>一般来讲有两个进程 worker和master&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>master 主进程 通过接受信号发给worker&lt;/li>
+&lt;li>worker 工作进程 更改在nginx.conf&lt;/li>
+&lt;/ul>
+&lt;h3 id="查看错误日志">查看错误日志
+&lt;/h3>&lt;pre tabindex="0">&lt;code>var/lof/nginx/error.log #nginx错误日志，可用cat查看
+ll #查看目录权限，权限不足可能有php-fpm和nginx无法通信的情况
+&lt;/code>&lt;/pre>&lt;h3 id="修改权限">修改权限
+&lt;/h3>&lt;pre tabindex="0">&lt;code>chmod 777 xxx #给予xxx最高权限 chmod 权限数字 文件名
+&lt;/code>&lt;/pre></description></item><item><title>Vim基础</title><link>https://bigashes.com/post/vim/nginx/</link><pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/vim/nginx/</guid><description>&lt;h1 id="vim基础">Vim基础
+&lt;/h1>&lt;p>这里列出bigash经常用到的vim操作，供日后回忆和学习用
+这里特别推荐Github的一个项目&lt;a class="link" href="https://github.com/wsdjeg/Learn-Vim_zh_cn" target="_blank" rel="noopener"
+>Learn-Vim_zh_cn&lt;/a>&lt;/p>
+&lt;h2 id="模式">模式
+&lt;/h2>&lt;p>vim中的模式其实看每个人的理解，这里只是罗列了部分，在:h Normal中可查看，当然这不影响使用，只需要知道最基本的几个就好&lt;/p>
+&lt;p>1.正常模式（Normal mode）
+直接打开vim时的默认模式，无论在那种模式下，Esc键就会进入正常模式，这个模式下可以移动光标，删除某行，复制多行，粘贴多行&lt;/p>
+&lt;p>2.命令行模式（Command line mode）
+正常模式下输入 / 或者 : 进入命令行模式，在该模式下可以进行保存，退出，搜索，替换，显示行号等&lt;/p>
+&lt;p>3.插入模式（Insert mode）
+正常模式下按下 i 键 ，进入插入模式，也就是我们编辑时需要进行的操作，退出按下Esc（Escape）&lt;/p>
+&lt;p>4.可视模式（Visual mode）
+可视模式就是选中一块区域进行操作，包括删除，替换，复制，粘贴，改变大小等，正常模式下按v进入字符文本，按V进入行文本&lt;/p>
+&lt;p>5.选择模式（Select mode）
+可以用光标或者鼠标高亮选择文本，任何输入都会替换高亮文本&lt;/p>
+&lt;p>6.多行命令执行模式 （Ex mode）
+EX指的是Execute在正常模式下输入 gQ进入 :visual退出&lt;/p>
+&lt;h2 id="buffers---windows---tabs">Buffers Windows Tabs
+&lt;/h2>&lt;p>Vim中，关于显示方面的抽象概念&lt;/p>
+&lt;ul>
+&lt;li>Buffers（缓冲区）
+buffer就是内存中的一块空间，我们可以在这里写入或编辑文本，在Vim中打开一个一个文件就会对应创建一个新的buffer，如打开两个文件&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>vim a.md b.md #这时会显示a.md
+:bnext #在命令行模式输入，切换到下一个buffer
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>
+&lt;p>Windows（窗口）
+一个window就是在buffer上的一个窗口，即你可以拥有多个窗口来显示buffer&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Tabs （选项卡）
+Tabs就是windows的集合&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>vim a.md
+:tabnew b.md #在命令行中输入
+&lt;/code>&lt;/pre>&lt;p>即可得：
+&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202202091331362.png"
+loading="lazy"
+alt="image-20220209133102256"
+>&lt;/p>
+&lt;h2 id="语法构成">语法构成
+&lt;/h2>&lt;h3 id="operation">Operation
+&lt;/h3>&lt;pre tabindex="0">&lt;code>shift+o #在光标所处行的上一行插入
+o #在光标所处行的下一行插入
+shift+i #在光标所处的行头插入
+shift+a #在光标所处的行末插入
+u #回退刚才的操作
+b #back 回退到这个上个词的词首
+c #修改当前行
+w #前进到下一个词的词首
+cw #更改这一个词
+ciw #词中修改这个词 change in word
+ci&amp;#34; #修改&amp;#34;&amp;#34;中的内容，其他同理
+y #复制 yank
+fv #find v 找到下一个v字母处
+/ #搜索
+yaw #yank all word 复制整个单词
+&lt;/code>&lt;/pre>&lt;blockquote>
+&lt;p>vim的操作有一个结构，就是&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted --> 在每一个operation后面可以加入motion，这样可以就可以实现快捷操作，像上面的fv，cw等是这个逻辑&lt;/p>&lt;/blockquote>
+&lt;h3 id="motion">Motion
+&lt;/h3>&lt;p>用来在vim中到处移动,当然Motion操作还有很多&lt;/p>
+&lt;pre tabindex="0">&lt;code>h #左
+j #下
+k #上 （前面加入数字n直接移动n行）
+l #右 （这里用方向键也可以完成）
+} #移动到下一个段落
+% #跳转到当前行的末尾
+&lt;/code>&lt;/pre>&lt;h2 id="部分语法">部分语法
+&lt;/h2>&lt;p>这里记录的是bigash个人常用的部分指令&lt;/p>
+&lt;h3 id="打开多个窗口">打开多个窗口
+&lt;/h3>&lt;pre tabindex="0">&lt;code>vim -o2 #打开2个水平分割的窗口
+vim -O2 #打开2个垂直排列的窗口
+&lt;/code>&lt;/pre>&lt;h3 id="查询指令">查询指令
+&lt;/h3>&lt;p>正常模式下 ，vim中不会的就可以直接在vim中输入指令查询，前提都是英文，看得懂的英文&lt;/p>
+&lt;pre tabindex="0">&lt;code>:h : quit #查看：quit的帮助文档
+&lt;/code>&lt;/pre>&lt;h3 id="外部指令">外部指令
+&lt;/h3>&lt;p>按下:! XX 即可执行外部指令，比如python c等&lt;/p>
+&lt;pre tabindex="0">&lt;code>:!python3 % # %代表当前文件
+&lt;/code>&lt;/pre>&lt;h3 id="挂起">挂起
+&lt;/h3>&lt;p>按下Ctrl+Z后即可将Vim挂起，也可以用:stop或者:suspend 返回时需要在终端运行fg&lt;/p>
+&lt;h3 id="终端vim指令">终端Vim指令
+&lt;/h3>&lt;p>可以和终端的命令绑定从而启动Vim 如&lt;/p>
+&lt;pre tabindex="0">&lt;code>ls -al | vim -
+&lt;/code>&lt;/pre>&lt;p>若有其他常用的，再做补充&lt;/p>
+&lt;h2 id="可视模式">可视模式
+&lt;/h2>&lt;p>在可视模式下选择一块文本，然后回车输入normal 就可以执行normal下的指令
+Ctrl+V即可进入可视块模式，然后Shift + I 行首并进入写入模式，就可以随意修改，按下esc后块内内容都会更改&lt;/p>
+&lt;h2 id="输出">输出
+&lt;/h2>&lt;pre tabindex="0">&lt;code>:%TOhtml
+&lt;/code>&lt;/pre>&lt;h2 id="宏">宏
+&lt;/h2>&lt;p>vim中有非常强大的操作就是宏
+在做重复工作的时候，可以用录制宏的方法来完成，录制好以后，就可以双手离开键盘很轻松&lt;/p></description></item><item><title>HTTPS折腾实录</title><link>https://bigashes.com/post/website/https/</link><pubDate>Thu, 26 Sep 2019 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/website/https/</guid><description>&lt;h1 id="https折腾实录">HTTPS折腾实录
+&lt;/h1>&lt;p>给自己网站增加小绿锁&lt;/p>
+&lt;ul>
+&lt;li>申请免费证书&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>阿里云，腾讯云等&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>用Lets&amp;rsquo;s Encrypt&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>&lt;a class="link" href="https://letsencrypt.org/" target="_blank" rel="noopener"
+>Lets&amp;rsquo;s Encrypt&lt;/a>这是一个免费、开放、自动化的证书颁发机构。&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>配置一个自签名的SSL证书&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>&lt;a class="link" href="https://www.liaoxuefeng.com/article/990311924891552" target="_blank" rel="noopener"
+>过程&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;h2 id="申请免费证书">申请免费证书
+&lt;/h2>&lt;ol>
+&lt;li>可以直接进入各大服务器运营商的网站寻找免费SSL，然后申请&lt;/li>
+&lt;li>在自己的域名管理界面录入解析&lt;/li>
+&lt;li>下载合适的证书（Nginx，Apache，Tomcat&amp;hellip;..）&lt;/li>
+&lt;li>在服务端配置（nginx下配置nginx.conf,但是需要注意nginx下必须有ssl模块）&lt;/li>
+&lt;/ol>
+&lt;p>申请完成后进行配置&lt;/p>
+&lt;h3 id="上传密钥">上传密钥
+&lt;/h3>&lt;p>上传之后进行配置，配置nginx.conf文件&lt;/p>
+&lt;h3 id="配置文件">配置文件
+&lt;/h3>&lt;p>这里配置的时候需要检查Nginx是否有ssl模块，如果没有需要重新编译安装&lt;/p>
+&lt;h3 id="可能遇到的问题">可能遇到的问题
+&lt;/h3>&lt;p>https访问静态页面成功，即https配置成功，但是动态页面访问不了，或者是css样式加载不出来都是Nginx与php-fom的通信配置出错引起的，耐心排查&lt;/p>
+&lt;h2 id="letss-encrypt">Lets&amp;rsquo;s Encrypt
+&lt;/h2>&lt;ul>
+&lt;li>也可以进入&lt;a class="link" href="https://certbot.eff.org/" target="_blank" rel="noopener"
+>免费https&lt;/a>项目主页选择后进行配置&lt;/li>
+&lt;/ul>
+&lt;p>这里直接在服务器端进行配置，需要注意以下三点&lt;/p>
+&lt;ul>
+&lt;li>域名成功解析到服务器ip，80端口开放&lt;/li>
+&lt;li>有指向公网IP地址的A记录&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>apt-get update #获取更新目录
+apt-get upgrade #更新目前的包
+apt-get install software-properties-common
+add-apt-repository ppa:certbot/certbot
+apt-get update
+apt-get install python3-certbot-nginx #python-cert-nginx被替换成这个了
+&lt;/code>&lt;/pre>&lt;p>安装Nginx版本证书&lt;/p>
+&lt;pre tabindex="0">&lt;code>certbot --nginx
+&lt;/code>&lt;/pre>&lt;blockquote>
+&lt;p>需要输入邮箱以及域名信息&lt;/p>&lt;/blockquote>
+&lt;h3 id="设置自动更新脚本">设置自动更新脚本
+&lt;/h3>&lt;pre>&lt;code>certbot renew --dry-run # 测试一下是否正常
+&lt;/code>&lt;/pre>
+&lt;p>写一个update.sh脚本&lt;/p>
+&lt;pre tabindex="0">&lt;code>#!/bin/bash
+last_run_time=0
+date1=date +%s
+interval_days_secs=$((87*24*3600))
+if [[ $((date1 - last_run_time)) -gt $interval_days_secs ]]; then
+certbot renew
+sed -i &amp;#39;2 s/[0-9][0-9]*/&amp;#39;$date1&amp;#39;/&amp;#39; update.sh
+fi
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>0 0 * * * /root/update.sh &amp;gt; /root/log 2&amp;gt;&amp;amp;1 #新建一个任务
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>/etc/init.d/cron restart #重启crontab服务
+&lt;/code>&lt;/pre>&lt;h3 id="删除和撤销域名">删除和撤销域名
+&lt;/h3>&lt;pre>&lt;code>certbot revoke --cert-path /etc/letsencrypt/archive/XXXXX.com/cert1.pem #撤销XXXXX.com配置的证书
+certbot delete #删除证书
+&lt;/code>&lt;/pre>
+&lt;blockquote>
+&lt;p>需要注意的是删除完之后需要更改配置文件中Certbot自动增加的配置&lt;/p>&lt;/blockquote></description></item><item><title>配置Wordpress</title><link>https://bigashes.com/post/website/wordpress/</link><pubDate>Wed, 25 Sep 2019 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/website/wordpress/</guid><description>&lt;h1 id="配置wordpress">配置Wordpress
+&lt;/h1>&lt;h2 id="数据库配置">数据库配置
+&lt;/h2>&lt;pre>&lt;code>mysql -uroot -p
+&lt;/code>&lt;/pre>
+&lt;p>进入数据库后输入以下命令&lt;/p>
+&lt;pre tabindex="0">&lt;code>create database wordpress; #创建数据库wordpress
+use wordpress #到wordpress数据库下操作
+create user &amp;#39;wordpress&amp;#39;@&amp;#39;localhost&amp;#39; identified by &amp;#39;XXXXXX&amp;#39;; #创建用户wordpress密码是XXXXXX
+grant all privileges on wordpress.* to &amp;#39;wordpress&amp;#39;@&amp;#39;localhost&amp;#39;; #给予wordpress所有权限
+flush privileges; #刷新权限
+exit; #退出数据库
+&lt;/code>&lt;/pre>&lt;h2 id="wordpress配置文件">wordpress配置文件
+&lt;/h2>&lt;p>下载好wordpress文件后解压&lt;/p>
+&lt;pre tabindex="0">&lt;code>cd /XXXXX/wordpress #进入wordpress文件夹
+cp wp-config-example.php wp-config.php #复制默认配置文件进行配置
+&lt;/code>&lt;/pre>&lt;p>键入自己刚才设置的数据库名称，用户名，以及密码。
+根据文档中的连接配置唯一的码，（好像并不影响）&lt;/p>
+&lt;p>还需要在wp-config.php加入&lt;/p>
+&lt;pre tabindex="0">&lt;code>define(&amp;#34;FS_METHOD&amp;#34;, &amp;#34;direct&amp;#34;);
+define(&amp;#34;FS_CHMOD_DIR&amp;#34;, 0777);
+define(&amp;#34;FS_CHMOD_FILE&amp;#34;, 0777);
+&lt;/code>&lt;/pre>&lt;h2 id="修改nginx配置文件">修改nginx配置文件
+&lt;/h2>&lt;p>相当于修改Nginx中配置的默认网页目录，指到Wordpress即可
+修改nginx.conf 或者 sites-enabled下的default&lt;/p>
+&lt;blockquote>
+&lt;p>也可以直接把文件复制过去&lt;/p>&lt;/blockquote>
+&lt;pre tabindex="0">&lt;code>cp -r /root/wordpress/* /var/www/html #复制
+chown -R www-data:www-data /var/www/html #修复权限
+&lt;/code>&lt;/pre>&lt;p>完成后重启Nginx&lt;/p>
+&lt;h2 id="访问域名">访问域名
+&lt;/h2>&lt;p>访问wordpress下的index.php 进入安装界面&lt;/p>
+&lt;h2 id="配置wordperess站点">配置wordperess站点
+&lt;/h2>&lt;p>ftp的权限&lt;/p>
+&lt;pre tabindex="0">&lt;code>chown -R apache:root /usr/share/wordpress
+&lt;/code>&lt;/pre>&lt;h3 id="默认上传大小">默认上传大小
+&lt;/h3>&lt;p>安装好网站之后需要配置主题，上传文件等，这里就需要修改一下wordpress的默认配置了&lt;/p>
+&lt;p>打开php.ini，把 upload_max_filesize 和 post_max_size 修改为50M，然后重启。
+service php7.4-fpm restart
+再次上传，问题依旧的话，可以排除php方面的问题，转而修改nginx.conf调整默认上传大小即可&lt;/p></description></item><item><title>搭建LNMP环境</title><link>https://bigashes.com/post/website/lnmp/</link><pubDate>Sun, 22 Sep 2019 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/website/lnmp/</guid><description>&lt;h1 id="搭建lnmp环境">搭建LNMP环境
+&lt;/h1>&lt;h2 id="准备环境">准备环境
+&lt;/h2>&lt;ul>
+&lt;li>关闭防火墙&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>systemctl status firewalld #查看当前防火墙状态
+systemctl stop firewalld #关闭当前防火墙
+systemctl disable firewalld #永久关闭防火墙
+&lt;/code>&lt;/pre>&lt;p>更多内容请查看&lt;a class="link" href="https://firewalld.org/" target="_blank" rel="noopener"
+>firewalld官网&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>关闭SELinux&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>getenforce #查看当前SELinux状态
+setenforce 0 #临时关闭SELinux
+&lt;/code>&lt;/pre>&lt;p>更多内容请查看&lt;a class="link" href="https://help.aliyun.com/document_detail/157022.html#task-2385075/" target="_blank" rel="noopener"
+>开启或关闭SELinux&lt;/a>&lt;/p>
+&lt;h3 id="安装nginx">安装Nginx
+&lt;/h3>&lt;ul>
+&lt;li>普通http 极速安装&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>本篇为普通安装,搭建HTTP网站
+https 需要编译安装,详细看另一篇 &lt;a class="link" href="https://bigashes.com" target="_blank" rel="noopener"
+>Nginx编译安装&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;pre tabindex="0">&lt;code>yum -y install nginx #安装nginx
+nginx -v #查看版本,有列出信息则安装成功
+&lt;/code>&lt;/pre>&lt;h3 id="安装mysql">安装Mysql
+&lt;/h3>&lt;pre>&lt;code>dnf -y install @mysql #安装mysql
+mysql -V #查询版本,有列出信息则安装成功
+&lt;/code>&lt;/pre>
+&lt;h3 id="安装php">安装PhP
+&lt;/h3>&lt;pre tabindex="0">&lt;code>dnf -y install epel-release
+dnf update epel-release #添加并更新epel源
+dnf clean all
+dnf makecache #删除缓存无用的软件包并更新软件源
+dnf module enable php:7.3 #启用php:7.3模块
+dnf install php php-curl php-dom php-exif php-fileinfo php-fpm php-gd php-hash php-json php-mbstring php-mysqli php-openssl php-pcre php-xml libsodium #安装php相应的模块
+php -v #查询版本,有列出信息则安装成功
+&lt;/code>&lt;/pre>&lt;h2 id="配置环境">配置环境
+&lt;/h2>&lt;h3 id="配置nginx">配置Nginx
+&lt;/h3>&lt;pre tabindex="0">&lt;code>cat /etc/nginx/nginx.conf # 查看Nginx配置文件路径
+&lt;/code>&lt;/pre>&lt;blockquote>
+&lt;p>Centos安装的nginx配置文件一般默认为这个位置,Ubuntu下的位置为/var/nginx/sites-enabled/default&lt;/p>&lt;/blockquote>
+&lt;pre tabindex="0">&lt;code>cd /etc/nginx/conf.d
+cp default.conf default.conf.bak #备份默认配置文件
+vim default.conf #vim编辑默认配置文件
+&lt;/code>&lt;/pre>&lt;p>在location /{ }括号内修改&lt;/p>
+&lt;pre tabindex="0">&lt;code>location / {
+#将该路径替换为您的网站根目录。
+root /usr/share/nginx/html;
+#添加默认首页信息index.php。
+index index.html index.htm index.php;
+}
+&lt;/code>&lt;/pre>&lt;p>修改php$,去掉注释&lt;/p>
+&lt;pre tabindex="0">&lt;code>location ~ \.php$ {
+root /usr/share/nginx/html; #将该路径替换为您的网站根目录。
+fastcgi_pass unix:/run/php-fpm/www.sock;
+fastcgi_index index.php;
+fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+include fastcgi_params;:wq
+}
+&lt;/code>&lt;/pre>&lt;blockquote>
+&lt;p>fastcgi_pass:是Nginx通过unix套接字与PHP-FPM建立联系，该配置与/etc/php-fpm.d/www.conf文件内的listen配置一致。
+fastcgi_param:将/scripts$fastcgi_script_name修改为$document_root$fastcgi_script_name。
+include:Nginx调用fastcgi接口处理PHP请求。&lt;/p>&lt;/blockquote>
+&lt;p>编辑好后文件结构应该如下
+&lt;img src="https://cdn.jsdelivr.net/gh/chuiluhui/mypic@master/img/202201071526881.jpg"
+loading="lazy"
+alt="nginx.conf"
+>&lt;/p>
+&lt;pre tabindex="0">&lt;code>systemctl start nginx #启动Nginx
+systemctl enable nginx #开机启动Nginx
+&lt;/code>&lt;/pre>&lt;h3 id="配置mysql">配置MySQL
+&lt;/h3>&lt;pre tabindex="0">&lt;code>systemctl enable --now mysqld
+systemctl status mysqld
+mysql_secure_installation
+&lt;/code>&lt;/pre>&lt;blockquote>
+&lt;p>ubuntu下先查询 /etc/mysql/debian.cnf的默认密码&lt;/p>&lt;/blockquote>
+&lt;pre tabindex="0">&lt;code>mysql -u debian-sys-maint -p # 换行后输入上述查到的密码
+&lt;/code>&lt;/pre>&lt;p>进入mysql&lt;/p>
+&lt;pre tabindex="0">&lt;code>use mysql;
+flush privileges;
+ALTER USER &amp;#39;root&amp;#39;@&amp;#39;localhost&amp;#39; IDENTIFIED WITH caching_sha2_password BY &amp;#39;XXXXX&amp;#39;; #XXXX是密码
+flush privileges;
+quit;
+service mysql restart
+mysql -u root -p # 回车后输入自己修改后的密码即可
+&lt;/code>&lt;/pre>&lt;h3 id="配置php">配置PHP
+&lt;/h3>&lt;pre tabindex="0">&lt;code>vi /etc/php-fpm.d/www.conf
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>vim /目录/phpinfo.php
+&lt;/code>&lt;/pre>&lt;h2 id="测试访问">测试访问
+&lt;/h2>&lt;p>在网站的目录下新建一个php文件&lt;/p>
+&lt;pre>&lt;code>vim info.php
+&amp;lt;?php echo phpinfo(); ?&amp;gt; #这是文件中输入的内容
+&lt;/code>&lt;/pre>
+&lt;p>然后在浏览器中访问这个文件（域名/info.php）若出现配置信息则代表php-fpm和nginx正常通信&lt;/p></description></item><item><title>搭建个人小站准备工作</title><link>https://bigashes.com/post/website/website/</link><pubDate>Fri, 20 Sep 2019 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/website/website/</guid><description>&lt;h1 id="搭建个人小站准备工作">搭建个人小站准备工作
 &lt;/h1>&lt;p>Blog 是WebLog的混成词 (意为log on the web)&lt;/p>
 &lt;p>之前的网站建设和文章分类撰写觉得有点太笼统，特此更新，将小站经历分步骤完整写出，希望对你有帮助，建议阅读顺序如下：&lt;/p>
 &lt;ol>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on Bigash</title><link>https://bigashes.com/categories/linux/</link><description>Recent content in Linux on Bigash</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 29 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://bigashes.com/categories/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>了解 GNU/Linux 操作系统</title><link>https://bigashes.com/post/linux/nginx/</link><pubDate>Wed, 29 Apr 2020 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/linux/nginx/</guid><description>&lt;h1 id="了解-gnulinux-操作系统">了解 GNU/Linux 操作系统
+&lt;/h1>&lt;p>Linux是服务器的（kernel）内核&lt;/p>
+&lt;h2 id="gnu">GNU
+&lt;/h2>&lt;p>平常说的linux操作系统全程是GNU/linux，单独的linux一般指的并不是操作系统，而是操作系统的内核，linux内核和GNU的组件组合在一起才是操作系统&lt;/p>
+&lt;blockquote>
+&lt;p>GNU 是“GNU&amp;rsquo;s Not Unix” （GNU并非Unix） 的递归首字母缩写词，发音为g’noo（哥no ⇣）
+GNU 是一个自由软件集体协作计划。它的目标是创建一套完全自由的操作系统GNU。由&lt;a class="link" href="https://www.fsf.org/" target="_blank" rel="noopener"
+>自由软件基金会（FSF）&lt;/a>以等多种方式支持，详细了解看看&lt;a class="link" href="https://www.gnu.org/gnu/gnu.html" target="_blank" rel="noopener"
+>关于GUN&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;h2 id="unix">Unix
+&lt;/h2>&lt;p>这里是为了区分一下GNU和Unix
+Linux，还有ios，Android，鸿蒙等都属于类Unix操作系统，Unix指的是操作系统，GNU的设计类似Unix，但是不包含具著作权的Unix代码，在上面的GNU&amp;rsquo;s Not Unix也能看出端倪&lt;/p>
+&lt;blockquote>
+&lt;p>查看&lt;a class="link" href="https://www.levenez.com/unix/" target="_blank" rel="noopener"
+>unix历史&lt;/a>,这里有个pdf文档，可以在里面看到UNIX的发展史，从一开始的UNICS衍生出各种系统，UNIX，Linux，IOS，Android&amp;hellip;..写这篇文档时，最新页面更新到了2021，这张历史图只是冰山一角，很多公司都有自己的unix版本&lt;/p>&lt;/blockquote>
+&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202201181043460.png"
+loading="lazy"
+alt="image-20220118104257314"
+>&lt;/p>
+&lt;h2 id="其他内核">其他内核
+&lt;/h2>&lt;p>linux的内核其实很常见&lt;/p>
+&lt;ul>
+&lt;li>安卓手机内核是linux&lt;/li>
+&lt;li>Openwrt内核也是linux&lt;/li>
+&lt;li>物理网中的嵌入式设备&lt;/li>
+&lt;/ul>
+&lt;p>不仅仅只有linux内核，还有很多其他的&lt;/p>
+&lt;ul>
+&lt;li>苹果的ios和mac操作系统首先是基于苹果自己开发的Darwin，类Unix系统，其内核是基于xnu（XUN&amp;rsquo;s Not UNIX）的一个混合内核,在gitee，github上可以找到&lt;a class="link" href="https://gitee.com/mirrors/darwin-xnu/" target="_blank" rel="noopener"
+>苹果开放的源码&lt;/a>&lt;/li>
+&lt;li>微软的Windows内核不公开&lt;/li>
+&lt;li>bsd 内核，索尼，任天堂都是用 bsd 而非 linux&lt;/li>
+&lt;li>GNU的hurd内核&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>一般拿到服务器的时候，可以用uname查看本机的内核，详细内容看linux系列的常用操作&lt;/p>&lt;/blockquote>
+&lt;h2 id="tuxedo">tuxedo
+&lt;/h2>&lt;p>一般看到的Linux系统图片都有一个小企鹅，它叫tux，全称是tuxdeo，是linux的吉祥物&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202201181116928.png"
+loading="lazy"
+alt="image-20220118111659870"
+>&lt;/p></description></item></channel></rss>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>数据结构 on Bigash</title><link>https://bigashes.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link><description>Recent content in 数据结构 on Bigash</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 29 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://bigashes.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.xml" rel="self" type="application/rss+xml"/><item><title>线性结构的应用</title><link>https://bigashes.com/post/datastructures/nginx/</link><pubDate>Wed, 29 Apr 2020 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/datastructures/nginx/</guid><description>&lt;h1 id="线性结构的应用">线性结构的应用
+&lt;/h1>&lt;p>具体的线性结构应用分为下面两种：&lt;/p>
+&lt;h2 id="栈">栈
+&lt;/h2>&lt;p>一种可以实现&lt;strong>先进后出&lt;/strong>的存储结构，类似弹夹&lt;/p>
+&lt;h3 id="栈的分类">栈的分类：
+&lt;/h3>&lt;ul>
+&lt;li>静态栈（也就是顺序栈）&lt;/li>
+&lt;li>动态栈（也就是链栈）&lt;/li>
+&lt;/ul>
+&lt;h3 id="栈的定义">栈的定义
+&lt;/h3>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-C" data-lang="C">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> Node
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> data;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> Node &lt;span style="color:#f92672">*&lt;/span>pNext;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}NODE,&lt;span style="color:#f92672">*&lt;/span>PNODE;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> Stack
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> PNODE pTop; &lt;span style="color:#75715e">//弹夹顶部
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> PNODE pBottom; &lt;span style="color:#75715e">//弹夹底部的一个元素(头节点)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}STACK,&lt;span style="color:#f92672">*&lt;/span>PSTACK; &lt;span style="color:#75715e">//PSTACK 等价于 struct STACK *
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="栈的应用">栈的应用
+&lt;/h3>&lt;ul>
+&lt;li>函数调用（复合函数？递归）&lt;/li>
+&lt;li>中断&lt;/li>
+&lt;li>表达式求值&lt;/li>
+&lt;li>内存分配&lt;/li>
+&lt;li>缓冲处理&lt;/li>
+&lt;li>迷宫&amp;hellip;&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;h2 id="队列">队列
+&lt;/h2>&lt;p>是一种可以实现&lt;strong>先进先出&lt;/strong>的存储结构&lt;/p>
+&lt;h3 id="队列分类">队列分类
+&lt;/h3>&lt;ul>
+&lt;li>静态队列（顺序队）&amp;ndash;数组实现
+通常都是&lt;strong>循环队列&lt;/strong>&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>用一般的数组实现队列会浪费空间，但是如果思想不变，变个形式，变成一个圈，也就是循环队列，就可以解决这个问题
+头部frout 和尾部rear在不同场合有不同的含义
+frout=rear 空
+多增加一个元素标识参数或者少用一个元素来判断满与不满，若frout与rear相邻，则满&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>链式队列（链队）&amp;ndash;链表实现&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-C" data-lang="C">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//循环队列的结构体
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//头部frout 和尾部rear在不同场合有不同的含义
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> Queue{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> &lt;span style="color:#f92672">*&lt;/span>pBase; &lt;span style="color:#75715e">//指向头的指针
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> frout; &lt;span style="color:#75715e">//头
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> rear &lt;span style="color:#75715e">//尾部后一个元素
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}QUEUE,&lt;span style="color:#f92672">*&lt;/span>PQUEUE;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="队列的应用">队列的应用
+&lt;/h3>&lt;ul>
+&lt;li>所有和时间有关的操作都与队列有关（操作系统？线程，阻塞&amp;hellip;队列）&lt;/li>
+&lt;/ul>
+&lt;p>最终的代码存放在&lt;a class="link" href="https://github.com/Big-ashes/Data-Structures" target="_blank" rel="noopener"
+>Github仓库&lt;/a> Stack和Queue部分&lt;/p></description></item></channel></rss>

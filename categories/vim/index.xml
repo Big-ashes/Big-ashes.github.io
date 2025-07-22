@@ -1,89 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Vim on Bigash</title><link>https://bigashes.com/categories/vim/</link><description>Recent content in Vim on Bigash</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 29 Sep 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://bigashes.com/categories/vim/index.xml" rel="self" type="application/rss+xml"/><item><title>NeoVim配置和使用</title><link>https://bigashes.com/post/vim/nginx/</link><pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/vim/nginx/</guid><description>&lt;h1 id="neovim配置和使用">NeoVim配置和使用
-&lt;/h1>&lt;p>Vim可太好用了，又自然而然找到了NeoVim，用vim的习惯也被带到了Windows下，故记录之
-Vim非常强大，但是是需要很大的学习成本的，多多探索！&lt;/p>
-&lt;blockquote>
-&lt;p>区别：&lt;/p>
-&lt;p>Neovim 专注于后端和控制台，而 Vim 是一个TUI 和 GUI 兼顾的编辑器。
-Neovim 不考虑 Vi 兼容的问题，所以有一个比较好的默认配置， 在全新安装的情况下也可以很好地工作
-Neovim 遵守 XDG Base Directory 规范，生成的文件不会污染 home 目录
-Neovim 支持一些现代终端模拟器的功能，例如它可以在插入模式和普通模式下使用不同形状的光标，可以识别粘贴行为并自动进入 paste 模式等&lt;/p>&lt;/blockquote>
-&lt;h2 id="下载">下载
-&lt;/h2>&lt;ul>
-&lt;li>Windows
-方案很多，可以直接在github上下载，在这里给出地址&lt;a class="link" href="https://github.com/neovim/neovim" target="_blank" rel="noopener"
->https://github.com/neovim/neovim&lt;/a> 在release即可找到需要的安装包，&lt;/li>
-&lt;li>Linux
-直接用下载工具下载neovim&lt;/li>
-&lt;/ul>
-&lt;pre tabindex="0">&lt;code>sudo yum install neovim
-sudo apt-get install neovim
-sudo pacman -S neovim
-&lt;/code>&lt;/pre>&lt;h2 id="安装">安装
-&lt;/h2>&lt;ul>
-&lt;li>Windows
-安装之后，需要配置系统环境变量，直接在path中添加&lt;/li>
-&lt;/ul>
-&lt;pre tabindex="0">&lt;code>D:\XXX\NeoVim\Neovim\bin #这个目录是自己安装时所选择的目录
-&lt;/code>&lt;/pre>&lt;p>Linux就不需要了&lt;/p>
-&lt;h2 id="配置">配置
-&lt;/h2>&lt;ul>
-&lt;li>Windows
-Windows的配置在 ~/AppData/Local/nvim/init.vim,如果没有自己新建即可
-&lt;ul>
-&lt;li>插件安装&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;pre tabindex="0">&lt;code>## vim-plug的文件在win中放在了AppData/Local/nvim/autoload/plug.vim下
-iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |`
-ni $HOME/AppData/Local/nvim/autoload/plug.vim -Forc
-&lt;/code>&lt;/pre>&lt;ul>
-&lt;li>
-&lt;p>Linux
-neovim的文件配置和vim的类似，linux文件的路径在~/.cinfig/nvim/init.vim,如果没有该文件自己新建即可,用nvim打开后即可添加相关配置&lt;/p>
-&lt;ul>
-&lt;li>插件安装&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;pre tabindex="0">&lt;code>## vim-plug的配置文件我放在了/.config/nvim/autoload/plug.vim
-curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
-https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-&lt;/code>&lt;/pre>&lt;p>最终配置的情况如下：&lt;/p>
-&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202202141103456.png"
-loading="lazy"
-alt="image"
->&lt;/p>
-&lt;h2 id="上传配置">上传配置
-&lt;/h2>&lt;p>vim和neovim的配置完成后，为了在其他机器上也可以用，所以我们需要将配置文件上传到我们的github仓库
-配置好ssh连接也就是SSH key后&lt;/p>
-&lt;pre tabindex="0">&lt;code>git init #新建库
-git add . #添加
-git commit -m &amp;#34;XXX&amp;#34; #提交XXX说明
-ssh -T git@github.com #测试ssh连接
-git reomte add origin git@github.com:XXXX/XXXX.git
-# XXX为用户名 XXXX为仓库名 这一步添加远程仓库
-git remote -v #查看远程仓库
-git pull origin main #拉取origin的分支main
-#第8行这一步可能会报错，是因为历史版本的不同，我们加上一句参数即可
-git pull origin main --allow-unrelated-histories
-git push -u origin main #上传当前分支到origin的main
-&lt;/code>&lt;/pre>&lt;h2 id="加载配置">加载配置
-&lt;/h2>&lt;p>配置完成之后我们需要一劳永逸的使用我们的配置文件，既然已经上传到git了，在安装好对应的环境后，就可以直接装git然后把整个仓库克隆下来&lt;/p>
-&lt;pre tabindex="0">&lt;code>#cd到.config文件下
-git clone https://github.com/Big-ashes/nvim.git
-# 可能会有连接问题，用http头尝试，不行就是系统有代理，取消一下
-vim ~/.gitconfig
-#直接删除掉http和https的代理
-&lt;/code>&lt;/pre>&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202202141108563.png"
-loading="lazy"
-alt="image-20220214110829523"
->&lt;/p>
-&lt;h2 id="可能遇到的问题">可能遇到的问题
-&lt;/h2>&lt;pre tabindex="0">&lt;code>#共同修改了某个文件，别人比你先提交，远程仓库和这个仓库有冲突，需要重新校准基础版本
-git pull origin main --rebase
-git rebase --continue
-&lt;/code>&lt;/pre></description></item><item><title>Vim基础</title><link>https://bigashes.com/post/vim/nginx/</link><pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/vim/nginx/</guid><description>&lt;h1 id="vim基础">Vim基础
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Vim on Bigash</title><link>https://bigashes.com/categories/vim/</link><description>Recent content in Vim on Bigash</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 29 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://bigashes.com/categories/vim/index.xml" rel="self" type="application/rss+xml"/><item><title>Vim基础</title><link>https://bigashes.com/post/vim/nginx/</link><pubDate>Wed, 29 Sep 2021 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/vim/nginx/</guid><description>&lt;h1 id="vim基础">Vim基础
 &lt;/h1>&lt;p>这里列出bigash经常用到的vim操作，供日后回忆和学习用
 这里特别推荐Github的一个项目&lt;a class="link" href="https://github.com/wsdjeg/Learn-Vim_zh_cn" target="_blank" rel="noopener"
 >Learn-Vim_zh_cn&lt;/a>&lt;/p>
@@ -177,4 +92,89 @@ Ctrl+V即可进入可视块模式，然后Shift + I 行首并进入写入模式�
 &lt;/h2>&lt;pre tabindex="0">&lt;code>:%TOhtml
 &lt;/code>&lt;/pre>&lt;h2 id="宏">宏
 &lt;/h2>&lt;p>vim中有非常强大的操作就是宏
-在做重复工作的时候，可以用录制宏的方法来完成，录制好以后，就可以双手离开键盘很轻松&lt;/p></description></item></channel></rss>
+在做重复工作的时候，可以用录制宏的方法来完成，录制好以后，就可以双手离开键盘很轻松&lt;/p></description></item><item><title>NeoVim配置和使用</title><link>https://bigashes.com/post/vim/nginx/</link><pubDate>Tue, 29 Sep 2020 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/vim/nginx/</guid><description>&lt;h1 id="neovim配置和使用">NeoVim配置和使用
+&lt;/h1>&lt;p>Vim可太好用了，又自然而然找到了NeoVim，用vim的习惯也被带到了Windows下，故记录之
+Vim非常强大，但是是需要很大的学习成本的，多多探索！&lt;/p>
+&lt;blockquote>
+&lt;p>区别：&lt;/p>
+&lt;p>Neovim 专注于后端和控制台，而 Vim 是一个TUI 和 GUI 兼顾的编辑器。
+Neovim 不考虑 Vi 兼容的问题，所以有一个比较好的默认配置， 在全新安装的情况下也可以很好地工作
+Neovim 遵守 XDG Base Directory 规范，生成的文件不会污染 home 目录
+Neovim 支持一些现代终端模拟器的功能，例如它可以在插入模式和普通模式下使用不同形状的光标，可以识别粘贴行为并自动进入 paste 模式等&lt;/p>&lt;/blockquote>
+&lt;h2 id="下载">下载
+&lt;/h2>&lt;ul>
+&lt;li>Windows
+方案很多，可以直接在github上下载，在这里给出地址&lt;a class="link" href="https://github.com/neovim/neovim" target="_blank" rel="noopener"
+>https://github.com/neovim/neovim&lt;/a> 在release即可找到需要的安装包，&lt;/li>
+&lt;li>Linux
+直接用下载工具下载neovim&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>sudo yum install neovim
+sudo apt-get install neovim
+sudo pacman -S neovim
+&lt;/code>&lt;/pre>&lt;h2 id="安装">安装
+&lt;/h2>&lt;ul>
+&lt;li>Windows
+安装之后，需要配置系统环境变量，直接在path中添加&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>D:\XXX\NeoVim\Neovim\bin #这个目录是自己安装时所选择的目录
+&lt;/code>&lt;/pre>&lt;p>Linux就不需要了&lt;/p>
+&lt;h2 id="配置">配置
+&lt;/h2>&lt;ul>
+&lt;li>Windows
+Windows的配置在 ~/AppData/Local/nvim/init.vim,如果没有自己新建即可
+&lt;ul>
+&lt;li>插件安装&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>## vim-plug的文件在win中放在了AppData/Local/nvim/autoload/plug.vim下
+iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |`
+ni $HOME/AppData/Local/nvim/autoload/plug.vim -Forc
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>
+&lt;p>Linux
+neovim的文件配置和vim的类似，linux文件的路径在~/.cinfig/nvim/init.vim,如果没有该文件自己新建即可,用nvim打开后即可添加相关配置&lt;/p>
+&lt;ul>
+&lt;li>插件安装&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>## vim-plug的配置文件我放在了/.config/nvim/autoload/plug.vim
+curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
+https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+&lt;/code>&lt;/pre>&lt;p>最终配置的情况如下：&lt;/p>
+&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202202141103456.png"
+loading="lazy"
+alt="image"
+>&lt;/p>
+&lt;h2 id="上传配置">上传配置
+&lt;/h2>&lt;p>vim和neovim的配置完成后，为了在其他机器上也可以用，所以我们需要将配置文件上传到我们的github仓库
+配置好ssh连接也就是SSH key后&lt;/p>
+&lt;pre tabindex="0">&lt;code>git init #新建库
+git add . #添加
+git commit -m &amp;#34;XXX&amp;#34; #提交XXX说明
+ssh -T git@github.com #测试ssh连接
+git reomte add origin git@github.com:XXXX/XXXX.git
+# XXX为用户名 XXXX为仓库名 这一步添加远程仓库
+git remote -v #查看远程仓库
+git pull origin main #拉取origin的分支main
+#第8行这一步可能会报错，是因为历史版本的不同，我们加上一句参数即可
+git pull origin main --allow-unrelated-histories
+git push -u origin main #上传当前分支到origin的main
+&lt;/code>&lt;/pre>&lt;h2 id="加载配置">加载配置
+&lt;/h2>&lt;p>配置完成之后我们需要一劳永逸的使用我们的配置文件，既然已经上传到git了，在安装好对应的环境后，就可以直接装git然后把整个仓库克隆下来&lt;/p>
+&lt;pre tabindex="0">&lt;code>#cd到.config文件下
+git clone https://github.com/Big-ashes/nvim.git
+# 可能会有连接问题，用http头尝试，不行就是系统有代理，取消一下
+vim ~/.gitconfig
+#直接删除掉http和https的代理
+&lt;/code>&lt;/pre>&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202202141108563.png"
+loading="lazy"
+alt="image-20220214110829523"
+>&lt;/p>
+&lt;h2 id="可能遇到的问题">可能遇到的问题
+&lt;/h2>&lt;pre tabindex="0">&lt;code>#共同修改了某个文件，别人比你先提交，远程仓库和这个仓库有冲突，需要重新校准基础版本
+git pull origin main --rebase
+git rebase --continue
+&lt;/code>&lt;/pre></description></item></channel></rss>

@@ -28,7 +28,186 @@ data-flex-basis="160px"
 &lt;p>Photo by &lt;a class="link" href="https://unsplash.com/@mymind" target="_blank" rel="noopener"
 >mymind&lt;/a> and &lt;a class="link" href="https://unsplash.com/@lukechesser" target="_blank" rel="noopener"
 >Luke Chesser&lt;/a> on &lt;a class="link" href="https://unsplash.com/" target="_blank" rel="noopener"
->Unsplash&lt;/a>&lt;/p>&lt;/blockquote></description></item><item><title>归档</title><link>https://bigashes.com/page/archives/</link><pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate><guid>https://bigashes.com/page/archives/</guid><description/></item><item><title>FRP 的配置和使用</title><link>https://bigashes.com/post/protocol/frp/</link><pubDate>Wed, 29 Apr 2020 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/protocol/frp/</guid><description>&lt;h1 id="frp-的配置和使用">FRP 的配置和使用
+>Unsplash&lt;/a>&lt;/p>&lt;/blockquote></description></item><item><title>归档</title><link>https://bigashes.com/page/archives/</link><pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate><guid>https://bigashes.com/page/archives/</guid><description/></item><item><title>Vim基础</title><link>https://bigashes.com/post/vim/nginx/</link><pubDate>Wed, 29 Sep 2021 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/vim/nginx/</guid><description>&lt;h1 id="vim基础">Vim基础
+&lt;/h1>&lt;p>这里列出bigash经常用到的vim操作，供日后回忆和学习用
+这里特别推荐Github的一个项目&lt;a class="link" href="https://github.com/wsdjeg/Learn-Vim_zh_cn" target="_blank" rel="noopener"
+>Learn-Vim_zh_cn&lt;/a>&lt;/p>
+&lt;h2 id="模式">模式
+&lt;/h2>&lt;p>vim中的模式其实看每个人的理解，这里只是罗列了部分，在:h Normal中可查看，当然这不影响使用，只需要知道最基本的几个就好&lt;/p>
+&lt;p>1.正常模式（Normal mode）
+直接打开vim时的默认模式，无论在那种模式下，Esc键就会进入正常模式，这个模式下可以移动光标，删除某行，复制多行，粘贴多行&lt;/p>
+&lt;p>2.命令行模式（Command line mode）
+正常模式下输入 / 或者 : 进入命令行模式，在该模式下可以进行保存，退出，搜索，替换，显示行号等&lt;/p>
+&lt;p>3.插入模式（Insert mode）
+正常模式下按下 i 键 ，进入插入模式，也就是我们编辑时需要进行的操作，退出按下Esc（Escape）&lt;/p>
+&lt;p>4.可视模式（Visual mode）
+可视模式就是选中一块区域进行操作，包括删除，替换，复制，粘贴，改变大小等，正常模式下按v进入字符文本，按V进入行文本&lt;/p>
+&lt;p>5.选择模式（Select mode）
+可以用光标或者鼠标高亮选择文本，任何输入都会替换高亮文本&lt;/p>
+&lt;p>6.多行命令执行模式 （Ex mode）
+EX指的是Execute在正常模式下输入 gQ进入 :visual退出&lt;/p>
+&lt;h2 id="buffers---windows---tabs">Buffers Windows Tabs
+&lt;/h2>&lt;p>Vim中，关于显示方面的抽象概念&lt;/p>
+&lt;ul>
+&lt;li>Buffers（缓冲区）
+buffer就是内存中的一块空间，我们可以在这里写入或编辑文本，在Vim中打开一个一个文件就会对应创建一个新的buffer，如打开两个文件&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>vim a.md b.md #这时会显示a.md
+:bnext #在命令行模式输入，切换到下一个buffer
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>
+&lt;p>Windows（窗口）
+一个window就是在buffer上的一个窗口，即你可以拥有多个窗口来显示buffer&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Tabs （选项卡）
+Tabs就是windows的集合&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>vim a.md
+:tabnew b.md #在命令行中输入
+&lt;/code>&lt;/pre>&lt;p>即可得：
+&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202202091331362.png"
+loading="lazy"
+alt="image-20220209133102256"
+>&lt;/p>
+&lt;h2 id="语法构成">语法构成
+&lt;/h2>&lt;h3 id="operation">Operation
+&lt;/h3>&lt;pre tabindex="0">&lt;code>shift+o #在光标所处行的上一行插入
+o #在光标所处行的下一行插入
+shift+i #在光标所处的行头插入
+shift+a #在光标所处的行末插入
+u #回退刚才的操作
+b #back 回退到这个上个词的词首
+c #修改当前行
+w #前进到下一个词的词首
+cw #更改这一个词
+ciw #词中修改这个词 change in word
+ci&amp;#34; #修改&amp;#34;&amp;#34;中的内容，其他同理
+y #复制 yank
+fv #find v 找到下一个v字母处
+/ #搜索
+yaw #yank all word 复制整个单词
+&lt;/code>&lt;/pre>&lt;blockquote>
+&lt;p>vim的操作有一个结构，就是&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted --> 在每一个operation后面可以加入motion，这样可以就可以实现快捷操作，像上面的fv，cw等是这个逻辑&lt;/p>&lt;/blockquote>
+&lt;h3 id="motion">Motion
+&lt;/h3>&lt;p>用来在vim中到处移动,当然Motion操作还有很多&lt;/p>
+&lt;pre tabindex="0">&lt;code>h #左
+j #下
+k #上 （前面加入数字n直接移动n行）
+l #右 （这里用方向键也可以完成）
+} #移动到下一个段落
+% #跳转到当前行的末尾
+&lt;/code>&lt;/pre>&lt;h2 id="部分语法">部分语法
+&lt;/h2>&lt;p>这里记录的是bigash个人常用的部分指令&lt;/p>
+&lt;h3 id="打开多个窗口">打开多个窗口
+&lt;/h3>&lt;pre tabindex="0">&lt;code>vim -o2 #打开2个水平分割的窗口
+vim -O2 #打开2个垂直排列的窗口
+&lt;/code>&lt;/pre>&lt;h3 id="查询指令">查询指令
+&lt;/h3>&lt;p>正常模式下 ，vim中不会的就可以直接在vim中输入指令查询，前提都是英文，看得懂的英文&lt;/p>
+&lt;pre tabindex="0">&lt;code>:h : quit #查看：quit的帮助文档
+&lt;/code>&lt;/pre>&lt;h3 id="外部指令">外部指令
+&lt;/h3>&lt;p>按下:! XX 即可执行外部指令，比如python c等&lt;/p>
+&lt;pre tabindex="0">&lt;code>:!python3 % # %代表当前文件
+&lt;/code>&lt;/pre>&lt;h3 id="挂起">挂起
+&lt;/h3>&lt;p>按下Ctrl+Z后即可将Vim挂起，也可以用:stop或者:suspend 返回时需要在终端运行fg&lt;/p>
+&lt;h3 id="终端vim指令">终端Vim指令
+&lt;/h3>&lt;p>可以和终端的命令绑定从而启动Vim 如&lt;/p>
+&lt;pre tabindex="0">&lt;code>ls -al | vim -
+&lt;/code>&lt;/pre>&lt;p>若有其他常用的，再做补充&lt;/p>
+&lt;h2 id="可视模式">可视模式
+&lt;/h2>&lt;p>在可视模式下选择一块文本，然后回车输入normal 就可以执行normal下的指令
+Ctrl+V即可进入可视块模式，然后Shift + I 行首并进入写入模式，就可以随意修改，按下esc后块内内容都会更改&lt;/p>
+&lt;h2 id="输出">输出
+&lt;/h2>&lt;pre tabindex="0">&lt;code>:%TOhtml
+&lt;/code>&lt;/pre>&lt;h2 id="宏">宏
+&lt;/h2>&lt;p>vim中有非常强大的操作就是宏
+在做重复工作的时候，可以用录制宏的方法来完成，录制好以后，就可以双手离开键盘很轻松&lt;/p></description></item><item><title>NeoVim配置和使用</title><link>https://bigashes.com/post/vim/nginx/</link><pubDate>Tue, 29 Sep 2020 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/vim/nginx/</guid><description>&lt;h1 id="neovim配置和使用">NeoVim配置和使用
+&lt;/h1>&lt;p>Vim可太好用了，又自然而然找到了NeoVim，用vim的习惯也被带到了Windows下，故记录之
+Vim非常强大，但是是需要很大的学习成本的，多多探索！&lt;/p>
+&lt;blockquote>
+&lt;p>区别：&lt;/p>
+&lt;p>Neovim 专注于后端和控制台，而 Vim 是一个TUI 和 GUI 兼顾的编辑器。
+Neovim 不考虑 Vi 兼容的问题，所以有一个比较好的默认配置， 在全新安装的情况下也可以很好地工作
+Neovim 遵守 XDG Base Directory 规范，生成的文件不会污染 home 目录
+Neovim 支持一些现代终端模拟器的功能，例如它可以在插入模式和普通模式下使用不同形状的光标，可以识别粘贴行为并自动进入 paste 模式等&lt;/p>&lt;/blockquote>
+&lt;h2 id="下载">下载
+&lt;/h2>&lt;ul>
+&lt;li>Windows
+方案很多，可以直接在github上下载，在这里给出地址&lt;a class="link" href="https://github.com/neovim/neovim" target="_blank" rel="noopener"
+>https://github.com/neovim/neovim&lt;/a> 在release即可找到需要的安装包，&lt;/li>
+&lt;li>Linux
+直接用下载工具下载neovim&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>sudo yum install neovim
+sudo apt-get install neovim
+sudo pacman -S neovim
+&lt;/code>&lt;/pre>&lt;h2 id="安装">安装
+&lt;/h2>&lt;ul>
+&lt;li>Windows
+安装之后，需要配置系统环境变量，直接在path中添加&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>D:\XXX\NeoVim\Neovim\bin #这个目录是自己安装时所选择的目录
+&lt;/code>&lt;/pre>&lt;p>Linux就不需要了&lt;/p>
+&lt;h2 id="配置">配置
+&lt;/h2>&lt;ul>
+&lt;li>Windows
+Windows的配置在 ~/AppData/Local/nvim/init.vim,如果没有自己新建即可
+&lt;ul>
+&lt;li>插件安装&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>## vim-plug的文件在win中放在了AppData/Local/nvim/autoload/plug.vim下
+iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |`
+ni $HOME/AppData/Local/nvim/autoload/plug.vim -Forc
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>
+&lt;p>Linux
+neovim的文件配置和vim的类似，linux文件的路径在~/.cinfig/nvim/init.vim,如果没有该文件自己新建即可,用nvim打开后即可添加相关配置&lt;/p>
+&lt;ul>
+&lt;li>插件安装&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>## vim-plug的配置文件我放在了/.config/nvim/autoload/plug.vim
+curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
+https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+&lt;/code>&lt;/pre>&lt;p>最终配置的情况如下：&lt;/p>
+&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202202141103456.png"
+loading="lazy"
+alt="image"
+>&lt;/p>
+&lt;h2 id="上传配置">上传配置
+&lt;/h2>&lt;p>vim和neovim的配置完成后，为了在其他机器上也可以用，所以我们需要将配置文件上传到我们的github仓库
+配置好ssh连接也就是SSH key后&lt;/p>
+&lt;pre tabindex="0">&lt;code>git init #新建库
+git add . #添加
+git commit -m &amp;#34;XXX&amp;#34; #提交XXX说明
+ssh -T git@github.com #测试ssh连接
+git reomte add origin git@github.com:XXXX/XXXX.git
+# XXX为用户名 XXXX为仓库名 这一步添加远程仓库
+git remote -v #查看远程仓库
+git pull origin main #拉取origin的分支main
+#第8行这一步可能会报错，是因为历史版本的不同，我们加上一句参数即可
+git pull origin main --allow-unrelated-histories
+git push -u origin main #上传当前分支到origin的main
+&lt;/code>&lt;/pre>&lt;h2 id="加载配置">加载配置
+&lt;/h2>&lt;p>配置完成之后我们需要一劳永逸的使用我们的配置文件，既然已经上传到git了，在安装好对应的环境后，就可以直接装git然后把整个仓库克隆下来&lt;/p>
+&lt;pre tabindex="0">&lt;code>#cd到.config文件下
+git clone https://github.com/Big-ashes/nvim.git
+# 可能会有连接问题，用http头尝试，不行就是系统有代理，取消一下
+vim ~/.gitconfig
+#直接删除掉http和https的代理
+&lt;/code>&lt;/pre>&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202202141108563.png"
+loading="lazy"
+alt="image-20220214110829523"
+>&lt;/p>
+&lt;h2 id="可能遇到的问题">可能遇到的问题
+&lt;/h2>&lt;pre tabindex="0">&lt;code>#共同修改了某个文件，别人比你先提交，远程仓库和这个仓库有冲突，需要重新校准基础版本
+git pull origin main --rebase
+git rebase --continue
+&lt;/code>&lt;/pre></description></item><item><title>FRP 的配置和使用</title><link>https://bigashes.com/post/protocol/frp/</link><pubDate>Wed, 29 Apr 2020 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/protocol/frp/</guid><description>&lt;h1 id="frp-的配置和使用">FRP 的配置和使用
 &lt;/h1>&lt;p>FRP（fast reverse proxy）可以用于反向代理和内网穿透，支持TCP，UDP，HTTP，HTTPS，这样就可以将内网的服务非常便携的通过具有公网IP节点的形式暴露到公网，作者是一个中国人，并且在&lt;a class="link" href="https://github.com/fatedier/frp" target="_blank" rel="noopener"
 >GitHub上可以找到对应的项目&lt;/a>&lt;/p>
 &lt;blockquote>
@@ -278,92 +457,7 @@ frout=rear 空
 &lt;li>所有和时间有关的操作都与队列有关（操作系统？线程，阻塞&amp;hellip;队列）&lt;/li>
 &lt;/ul>
 &lt;p>最终的代码存放在&lt;a class="link" href="https://github.com/Big-ashes/Data-Structures" target="_blank" rel="noopener"
->Github仓库&lt;/a> Stack和Queue部分&lt;/p></description></item><item><title>NeoVim配置和使用</title><link>https://bigashes.com/post/vim/nginx/</link><pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/vim/nginx/</guid><description>&lt;h1 id="neovim配置和使用">NeoVim配置和使用
-&lt;/h1>&lt;p>Vim可太好用了，又自然而然找到了NeoVim，用vim的习惯也被带到了Windows下，故记录之
-Vim非常强大，但是是需要很大的学习成本的，多多探索！&lt;/p>
-&lt;blockquote>
-&lt;p>区别：&lt;/p>
-&lt;p>Neovim 专注于后端和控制台，而 Vim 是一个TUI 和 GUI 兼顾的编辑器。
-Neovim 不考虑 Vi 兼容的问题，所以有一个比较好的默认配置， 在全新安装的情况下也可以很好地工作
-Neovim 遵守 XDG Base Directory 规范，生成的文件不会污染 home 目录
-Neovim 支持一些现代终端模拟器的功能，例如它可以在插入模式和普通模式下使用不同形状的光标，可以识别粘贴行为并自动进入 paste 模式等&lt;/p>&lt;/blockquote>
-&lt;h2 id="下载">下载
-&lt;/h2>&lt;ul>
-&lt;li>Windows
-方案很多，可以直接在github上下载，在这里给出地址&lt;a class="link" href="https://github.com/neovim/neovim" target="_blank" rel="noopener"
->https://github.com/neovim/neovim&lt;/a> 在release即可找到需要的安装包，&lt;/li>
-&lt;li>Linux
-直接用下载工具下载neovim&lt;/li>
-&lt;/ul>
-&lt;pre tabindex="0">&lt;code>sudo yum install neovim
-sudo apt-get install neovim
-sudo pacman -S neovim
-&lt;/code>&lt;/pre>&lt;h2 id="安装">安装
-&lt;/h2>&lt;ul>
-&lt;li>Windows
-安装之后，需要配置系统环境变量，直接在path中添加&lt;/li>
-&lt;/ul>
-&lt;pre tabindex="0">&lt;code>D:\XXX\NeoVim\Neovim\bin #这个目录是自己安装时所选择的目录
-&lt;/code>&lt;/pre>&lt;p>Linux就不需要了&lt;/p>
-&lt;h2 id="配置">配置
-&lt;/h2>&lt;ul>
-&lt;li>Windows
-Windows的配置在 ~/AppData/Local/nvim/init.vim,如果没有自己新建即可
-&lt;ul>
-&lt;li>插件安装&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;pre tabindex="0">&lt;code>## vim-plug的文件在win中放在了AppData/Local/nvim/autoload/plug.vim下
-iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |`
-ni $HOME/AppData/Local/nvim/autoload/plug.vim -Forc
-&lt;/code>&lt;/pre>&lt;ul>
-&lt;li>
-&lt;p>Linux
-neovim的文件配置和vim的类似，linux文件的路径在~/.cinfig/nvim/init.vim,如果没有该文件自己新建即可,用nvim打开后即可添加相关配置&lt;/p>
-&lt;ul>
-&lt;li>插件安装&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;pre tabindex="0">&lt;code>## vim-plug的配置文件我放在了/.config/nvim/autoload/plug.vim
-curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
-https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-&lt;/code>&lt;/pre>&lt;p>最终配置的情况如下：&lt;/p>
-&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202202141103456.png"
-loading="lazy"
-alt="image"
->&lt;/p>
-&lt;h2 id="上传配置">上传配置
-&lt;/h2>&lt;p>vim和neovim的配置完成后，为了在其他机器上也可以用，所以我们需要将配置文件上传到我们的github仓库
-配置好ssh连接也就是SSH key后&lt;/p>
-&lt;pre tabindex="0">&lt;code>git init #新建库
-git add . #添加
-git commit -m &amp;#34;XXX&amp;#34; #提交XXX说明
-ssh -T git@github.com #测试ssh连接
-git reomte add origin git@github.com:XXXX/XXXX.git
-# XXX为用户名 XXXX为仓库名 这一步添加远程仓库
-git remote -v #查看远程仓库
-git pull origin main #拉取origin的分支main
-#第8行这一步可能会报错，是因为历史版本的不同，我们加上一句参数即可
-git pull origin main --allow-unrelated-histories
-git push -u origin main #上传当前分支到origin的main
-&lt;/code>&lt;/pre>&lt;h2 id="加载配置">加载配置
-&lt;/h2>&lt;p>配置完成之后我们需要一劳永逸的使用我们的配置文件，既然已经上传到git了，在安装好对应的环境后，就可以直接装git然后把整个仓库克隆下来&lt;/p>
-&lt;pre tabindex="0">&lt;code>#cd到.config文件下
-git clone https://github.com/Big-ashes/nvim.git
-# 可能会有连接问题，用http头尝试，不行就是系统有代理，取消一下
-vim ~/.gitconfig
-#直接删除掉http和https的代理
-&lt;/code>&lt;/pre>&lt;p>&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202202141108563.png"
-loading="lazy"
-alt="image-20220214110829523"
->&lt;/p>
-&lt;h2 id="可能遇到的问题">可能遇到的问题
-&lt;/h2>&lt;pre tabindex="0">&lt;code>#共同修改了某个文件，别人比你先提交，远程仓库和这个仓库有冲突，需要重新校准基础版本
-git pull origin main --rebase
-git rebase --continue
-&lt;/code>&lt;/pre></description></item><item><title>Nginx踩坑之路</title><link>https://bigashes.com/post/website/nginx/</link><pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/website/nginx/</guid><description>&lt;h1 id="nginx踩坑之路">Nginx踩坑之路
+>Github仓库&lt;/a> Stack和Queue部分&lt;/p></description></item><item><title>Nginx踩坑之路</title><link>https://bigashes.com/post/website/nginx/</link><pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/website/nginx/</guid><description>&lt;h1 id="nginx踩坑之路">Nginx踩坑之路
 &lt;/h1>&lt;p>这里稍微详细叙述下Nginx的原理和一些可能遇到的问题，都是bigash本人摸索出来的，如有错误，欢迎指正&lt;/p>
 &lt;h2 id="nginx-原理">Nginx 原理
 &lt;/h2>&lt;p>查阅资料后bigash自己得到的理解，大部分都是和搭建个人网站时遇到的问题挂钩&lt;/p>
@@ -409,101 +503,7 @@ root位置错误&lt;/p>&lt;/blockquote>
 ll #查看目录权限，权限不足可能有php-fpm和nginx无法通信的情况
 &lt;/code>&lt;/pre>&lt;h3 id="修改权限">修改权限
 &lt;/h3>&lt;pre tabindex="0">&lt;code>chmod 777 xxx #给予xxx最高权限 chmod 权限数字 文件名
-&lt;/code>&lt;/pre></description></item><item><title>Vim基础</title><link>https://bigashes.com/post/vim/nginx/</link><pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/vim/nginx/</guid><description>&lt;h1 id="vim基础">Vim基础
-&lt;/h1>&lt;p>这里列出bigash经常用到的vim操作，供日后回忆和学习用
-这里特别推荐Github的一个项目&lt;a class="link" href="https://github.com/wsdjeg/Learn-Vim_zh_cn" target="_blank" rel="noopener"
->Learn-Vim_zh_cn&lt;/a>&lt;/p>
-&lt;h2 id="模式">模式
-&lt;/h2>&lt;p>vim中的模式其实看每个人的理解，这里只是罗列了部分，在:h Normal中可查看，当然这不影响使用，只需要知道最基本的几个就好&lt;/p>
-&lt;p>1.正常模式（Normal mode）
-直接打开vim时的默认模式，无论在那种模式下，Esc键就会进入正常模式，这个模式下可以移动光标，删除某行，复制多行，粘贴多行&lt;/p>
-&lt;p>2.命令行模式（Command line mode）
-正常模式下输入 / 或者 : 进入命令行模式，在该模式下可以进行保存，退出，搜索，替换，显示行号等&lt;/p>
-&lt;p>3.插入模式（Insert mode）
-正常模式下按下 i 键 ，进入插入模式，也就是我们编辑时需要进行的操作，退出按下Esc（Escape）&lt;/p>
-&lt;p>4.可视模式（Visual mode）
-可视模式就是选中一块区域进行操作，包括删除，替换，复制，粘贴，改变大小等，正常模式下按v进入字符文本，按V进入行文本&lt;/p>
-&lt;p>5.选择模式（Select mode）
-可以用光标或者鼠标高亮选择文本，任何输入都会替换高亮文本&lt;/p>
-&lt;p>6.多行命令执行模式 （Ex mode）
-EX指的是Execute在正常模式下输入 gQ进入 :visual退出&lt;/p>
-&lt;h2 id="buffers---windows---tabs">Buffers Windows Tabs
-&lt;/h2>&lt;p>Vim中，关于显示方面的抽象概念&lt;/p>
-&lt;ul>
-&lt;li>Buffers（缓冲区）
-buffer就是内存中的一块空间，我们可以在这里写入或编辑文本，在Vim中打开一个一个文件就会对应创建一个新的buffer，如打开两个文件&lt;/li>
-&lt;/ul>
-&lt;pre tabindex="0">&lt;code>vim a.md b.md #这时会显示a.md
-:bnext #在命令行模式输入，切换到下一个buffer
-&lt;/code>&lt;/pre>&lt;ul>
-&lt;li>
-&lt;p>Windows（窗口）
-一个window就是在buffer上的一个窗口，即你可以拥有多个窗口来显示buffer&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Tabs （选项卡）
-Tabs就是windows的集合&lt;/p>
-&lt;/li>
-&lt;/ul>
-&lt;pre tabindex="0">&lt;code>vim a.md
-:tabnew b.md #在命令行中输入
-&lt;/code>&lt;/pre>&lt;p>即可得：
-&lt;img src="https://fastly.jsdelivr.net/gh/Big-ashes/mypic@master/img/202202091331362.png"
-loading="lazy"
-alt="image-20220209133102256"
->&lt;/p>
-&lt;h2 id="语法构成">语法构成
-&lt;/h2>&lt;h3 id="operation">Operation
-&lt;/h3>&lt;pre tabindex="0">&lt;code>shift+o #在光标所处行的上一行插入
-o #在光标所处行的下一行插入
-shift+i #在光标所处的行头插入
-shift+a #在光标所处的行末插入
-u #回退刚才的操作
-b #back 回退到这个上个词的词首
-c #修改当前行
-w #前进到下一个词的词首
-cw #更改这一个词
-ciw #词中修改这个词 change in word
-ci&amp;#34; #修改&amp;#34;&amp;#34;中的内容，其他同理
-y #复制 yank
-fv #find v 找到下一个v字母处
-/ #搜索
-yaw #yank all word 复制整个单词
-&lt;/code>&lt;/pre>&lt;blockquote>
-&lt;p>vim的操作有一个结构，就是&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted --> 在每一个operation后面可以加入motion，这样可以就可以实现快捷操作，像上面的fv，cw等是这个逻辑&lt;/p>&lt;/blockquote>
-&lt;h3 id="motion">Motion
-&lt;/h3>&lt;p>用来在vim中到处移动,当然Motion操作还有很多&lt;/p>
-&lt;pre tabindex="0">&lt;code>h #左
-j #下
-k #上 （前面加入数字n直接移动n行）
-l #右 （这里用方向键也可以完成）
-} #移动到下一个段落
-% #跳转到当前行的末尾
-&lt;/code>&lt;/pre>&lt;h2 id="部分语法">部分语法
-&lt;/h2>&lt;p>这里记录的是bigash个人常用的部分指令&lt;/p>
-&lt;h3 id="打开多个窗口">打开多个窗口
-&lt;/h3>&lt;pre tabindex="0">&lt;code>vim -o2 #打开2个水平分割的窗口
-vim -O2 #打开2个垂直排列的窗口
-&lt;/code>&lt;/pre>&lt;h3 id="查询指令">查询指令
-&lt;/h3>&lt;p>正常模式下 ，vim中不会的就可以直接在vim中输入指令查询，前提都是英文，看得懂的英文&lt;/p>
-&lt;pre tabindex="0">&lt;code>:h : quit #查看：quit的帮助文档
-&lt;/code>&lt;/pre>&lt;h3 id="外部指令">外部指令
-&lt;/h3>&lt;p>按下:! XX 即可执行外部指令，比如python c等&lt;/p>
-&lt;pre tabindex="0">&lt;code>:!python3 % # %代表当前文件
-&lt;/code>&lt;/pre>&lt;h3 id="挂起">挂起
-&lt;/h3>&lt;p>按下Ctrl+Z后即可将Vim挂起，也可以用:stop或者:suspend 返回时需要在终端运行fg&lt;/p>
-&lt;h3 id="终端vim指令">终端Vim指令
-&lt;/h3>&lt;p>可以和终端的命令绑定从而启动Vim 如&lt;/p>
-&lt;pre tabindex="0">&lt;code>ls -al | vim -
-&lt;/code>&lt;/pre>&lt;p>若有其他常用的，再做补充&lt;/p>
-&lt;h2 id="可视模式">可视模式
-&lt;/h2>&lt;p>在可视模式下选择一块文本，然后回车输入normal 就可以执行normal下的指令
-Ctrl+V即可进入可视块模式，然后Shift + I 行首并进入写入模式，就可以随意修改，按下esc后块内内容都会更改&lt;/p>
-&lt;h2 id="输出">输出
-&lt;/h2>&lt;pre tabindex="0">&lt;code>:%TOhtml
-&lt;/code>&lt;/pre>&lt;h2 id="宏">宏
-&lt;/h2>&lt;p>vim中有非常强大的操作就是宏
-在做重复工作的时候，可以用录制宏的方法来完成，录制好以后，就可以双手离开键盘很轻松&lt;/p></description></item><item><title>HTTPS折腾实录</title><link>https://bigashes.com/post/website/https/</link><pubDate>Thu, 26 Sep 2019 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/website/https/</guid><description>&lt;h1 id="https折腾实录">HTTPS折腾实录
+&lt;/code>&lt;/pre></description></item><item><title>HTTPS折腾实录</title><link>https://bigashes.com/post/website/https/</link><pubDate>Thu, 26 Sep 2019 00:00:00 +0000</pubDate><guid>https://bigashes.com/post/website/https/</guid><description>&lt;h1 id="https折腾实录">HTTPS折腾实录
 &lt;/h1>&lt;p>给自己网站增加小绿锁&lt;/p>
 &lt;ul>
 &lt;li>申请免费证书&lt;/li>

@@ -59,7 +59,7 @@ fv #find v 找到下一个v字母处
 / #搜索
 yaw #yank all word 复制整个单词
 &lt;/code>&lt;/pre>&lt;blockquote>
-&lt;p>vim的操作有一个结构，就是&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted --> 在每一个operation后面可以加入motion，这样可以就可以实现快捷操作，像上面的fv，cw等是这个逻辑&lt;/p>&lt;/blockquote>
+&lt;p>vim的操作有一个结构，就是&lt;operation>&lt;motion> 在每一个operation后面可以加入motion，这样可以就可以实现快捷操作，像上面的fv，cw等是这个逻辑&lt;/p>&lt;/blockquote>
 &lt;h3 id="motion">Motion
 &lt;/h3>&lt;p>用来在vim中到处移动,当然Motion操作还有很多&lt;/p>
 &lt;pre tabindex="0">&lt;code>h #左
